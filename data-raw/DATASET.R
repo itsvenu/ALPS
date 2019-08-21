@@ -74,7 +74,7 @@ data_table_bt <- data_table %>%
   dplyr::sample_n(size = 20) %>%
   dplyr::arrange(group)
 
-write.table(data_table_bt, file = "inst/extdata/bw/ALPS_example_datatable_browsertracks.txt", sep = "\t", row.names = F, quote = F)
+write.table(data_table_bt, file = "inst/extdata/bw/ALPS_example_datatable_browsertracks.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 
 ## motif files
 usethis::use_directory("inst/extdata/motifs")
@@ -101,8 +101,8 @@ data_table_4_overlapviolins <- data_table_4_overlapviolins %>%
 usethis::use_directory("inst/extdata/overlap_violins")
 
 ## write these to inst/extdata/overlap-violins
-write.table(enrichemnts_4_overlapviolins, file = "inst/extdata/overlap_violins/enrichemnts_4_overlapviolins.txt", sep = "\t", row.names = F, quote = F)
-write.table(data_table_4_overlapviolins, file = "inst/extdata/overlap_violins/data_table_4_overlapviolins.txt", sep = "\t", row.names = F, quote = F)
+write.table(enrichemnts_4_overlapviolins, file = "inst/extdata/overlap_violins/enrichemnts_4_overlapviolins.txt", sep = "\t", row.names = FALSE, quote = FALSE)
+write.table(data_table_4_overlapviolins, file = "inst/extdata/overlap_violins/data_table_4_overlapviolins.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 
 #usethis::use_data(enrichemnts_4_overlapviolins, overwrite = TRUE)
 #usethis::use_data(data_table_4_overlapviolins, overwrite = TRUE)
