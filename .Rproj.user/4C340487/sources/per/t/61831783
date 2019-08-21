@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1566399869898.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1483131255",
+    "id" : "61831783",
+    "lastKnownWriteTime" : 1566399865,
+    "last_content_update" : 1566399865,
+    "path" : "~/Desktop/work/epivis_project/ALPS_project/ALPS/.gitignore",
+    "project_path" : ".gitignore",
+    "properties" : {
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "gitignore"
+}

@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1566398853913.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2849615307",
+    "id" : "60BC53C6",
+    "lastKnownWriteTime" : 1566399820,
+    "last_content_update" : 1566399820937,
+    "path" : "~/Desktop/work/epivis_project/ALPS_project/ALPS/vignettes/ALPS-vignette.Rmd",
+    "project_path" : "vignettes/ALPS-vignette.Rmd",
+    "properties" : {
+        "cursorPosition" : "328,70",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

@@ -1,0 +1,9 @@
+bw_path	sample_id	sample_status	group	color_code
+path.bw	s1	untreated	tf1	gray
+path.bw	s2	untreated	tf2	gray
+path.bw	s3	untreated	tf1	gray
+path.bw	s4	untreated	tf2	gray
+path.bw	s5	treated	tf1	red
+path.bw	s6	treated	tf2	red
+path.bw	s7	treated	tf1	red
+path.bw	s8	treated	tf2	red

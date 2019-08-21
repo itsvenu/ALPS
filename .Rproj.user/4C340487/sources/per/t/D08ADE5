@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1566398752505.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2770722236",
+    "id" : "D08ADE5",
+    "lastKnownWriteTime" : 1566399205,
+    "last_content_update" : 1566399205508,
+    "path" : "~/Desktop/work/epivis_project/ALPS_project/ALPS/README.Rmd",
+    "project_path" : "README.Rmd",
+    "properties" : {
+        "cursorPosition" : "333,70",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
