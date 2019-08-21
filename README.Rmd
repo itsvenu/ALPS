@@ -141,7 +141,7 @@ The function `get_variable_regions` takes the output of `multiBigwig_summary` or
 Following is an example on how to integrate `multiBigwig_summary` output to `ComplexHeatmap` via `get_variable_regions`
 
 
-```{r fig.width=7, fig.height=6.5}
+```{r fig.width=7, fig.height=6.5, fig.align = "center"}
 enrichments_matrix <- get_variable_regions(enrichments_df = enrichments,
                                            log_transform = TRUE,
                                            scale = TRUE,
