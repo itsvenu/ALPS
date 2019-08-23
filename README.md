@@ -101,13 +101,13 @@ chr21_data_table %>% head
 #> 4    BRCA_2  BRCA    #FFED6F
 #> 5    GBMx_1  GBMx    #B3DE69
 #> 6    GBMx_2  GBMx    #B3DE69
-#>                                                                                                                                                                 bw_path
-#> 1 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/ACCx_025FE5F8_885E_433D_9018_7AE322A92285_X034_S09_L133_B1_T1_PMRG.insertions.chr21.bw
-#> 2 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/ACCx_025FE5F8_885E_433D_9018_7AE322A92285_X034_S09_L134_B1_T2_PMRG.insertions.chr21.bw
-#> 3 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/BRCA_000CFD9F_ADDF_4304_9E60_6041549E189C_X017_S06_L012_B1_T2_P046.insertions.chr21.bw
-#> 4 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/BRCA_01112370_4F6F_4A20_9BE0_7975C3465268_X017_S04_L007_B1_T1_P042.insertions.chr21.bw
-#> 5 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/GBMx_09C0DCE7_D669_4D28_980D_BF71179116A4_X008_S01_L001_B1_T1_P017.insertions.chr21.bw
-#> 6 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/GBMx_09C0DCE7_D669_4D28_980D_BF71179116A4_X008_S01_L002_B1_T2_P020.insertions.chr21.bw
+#>                                                                                              bw_path
+#> 1 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/ACCx_025FE5F8_T1.bw
+#> 2 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/ACCx_025FE5F8_T2.bw
+#> 3 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/BRCA_000CFD9F_T2.bw
+#> 4 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/BRCA_01112370_T1.bw
+#> 5 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/GBMx_09C0DCE7_T1.bw
+#> 6 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/GBMx_09C0DCE7_T2.bw
 #>                                                                                    bed_path
 #> 1 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/ACCx_1.bed
 #> 2 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/ACCx_2.bed
@@ -397,7 +397,7 @@ sessionInfo()
 #> [8] base     
 #> 
 #> other attached packages:
-#> [1] circlize_0.4.6       ComplexHeatmap_2.0.0 ALPS_0.99.0         
+#> [1] circlize_0.4.6       ComplexHeatmap_2.0.0 ALPS_0.99.1         
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] tidyselect_0.2.5                       
