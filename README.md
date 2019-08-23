@@ -33,6 +33,8 @@ Bigwig files evolved to be a multi-purpose compressed binary format to store gen
 <p align="center">
 <img src="man/figures/README-bigwig-overview.png" width="70%" />
 </p>
+
+
 Generate bigwig files
 ---------------------
 
@@ -50,6 +52,8 @@ Following is the overview of the `ALPS` workflow and available functions
 <p align="center">
 <img src="man/figures/README-ALPS-overview.png" width="100%" />
 </p>
+
+
 Installation
 ============
 
