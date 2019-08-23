@@ -31,24 +31,20 @@ getChrStartEnd <- function(x){
 #'
 #' @examples
 #'
-#' ## plot browser tracks
-#' ## devtools::install_github("itsvenu/ALPSdata")
+#' ## load example data
 #'
-#' chr21_bw_zip <- system.file("extdata", "chr21.bw.tar.gz", package = "ALPSdata", mustWork = TRUE)
-#' untar(chr21_bw_zip, exdir = "./test_chr21")
 #' chr21_data_table <- system.file("extdata/bw", "ALPS_example_datatable.txt", package = "ALPS", mustWork = TRUE)
+#'
+#' ## attach path to bw_path and bed_path
+#' d_path <- dirname(chr21_data_table)
+#'
 #' chr21_data_table <- read.delim(chr21_data_table, header = TRUE)
-#' chr21_data_table$bw_path <- paste0("./test_chr21/", chr21_data_table$bw_path)
+#' chr21_data_table$bw_path <- paste0(d_path, "/", chr21_data_table$bw_path)
+#' chr21_data_table$bed_path <- paste0(d_path, "/", chr21_data_table$bed_path)
 #'
-#' set.seed(12345)
-#' chr21_10samples <- chr21_data_table %>%
-#' dplyr::sample_n(size = 10) %>%
-#' dplyr::arrange(desc(group))
+#' gene_range = "chr21:45643725-45942454"
 #'
-#' ## gene_range
-#' gene_range = "chr21:33025845-33129196"
-#'
-#' plot_browser_tracks(data_table = chr21_10samples,
+#' plot_browser_tracks(data_table = chr21_data_table,
 #' gene_range = gene_range, ref_gen = "hg38")
 
 plot_browser_tracks <- function(data_table=NULL, gene_range = NULL,

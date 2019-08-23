@@ -6,21 +6,7 @@ library(dplyr)
 
 usethis::use_directory("inst/extdata/bw")
 
-## copy chr21 bigwig files into extdata
-# all_files <- list.files(path = "~/Desktop/work/TCGA_ATAC/bw/chr21_bw5/", pattern = "*bw", full.names = TRUE)
-#
-# for(i in 1:length(all_files)){
-#
-#   file.copy(from = all_files[i], to = "inst/extdata/bw")
-# }
-
-#chr21_tar <- "~/Desktop/work/TCGA_ATAC/bw/chr21_bw5/chr21.bw.tar.gz"
-
-#file.copy(from = chr21_tar, to = "inst/extdata/bw/chr21.bw.tar.gz")
-
-## data_table
-
-bw_files <- list.files(path = "~/Desktop/work/TCGA_ATAC/bw/chr21_bw5", pattern = "bw$")
+bw_files <- list.files(path = "~/Desktop/work/TCGA_ATAC/bw/ALPS_example/example_bw", pattern = "bw$")
 
 data_table <- bw_files %>%
   as.data.frame() %>%
@@ -30,28 +16,20 @@ group_info <- basename(bw_files) %>% gsub("_.*", "", .)
 
 data_table$group <- group_info
 
-group_info <- paste0(group_info, "_", rep(1:5, 12))
+group_info <- paste0(group_info, "_", rep(1:2, 4))
 
 data_table$sample_id <- group_info
 
 ## add colors
 data_table <- data_table %>%
   dplyr::mutate(color_code = dplyr::case_when(grepl("ACCx", group) ~ "#8DD3C7",
-                                              grepl("BLCA", group) ~ "#FFFFB3",
                                               grepl("BRCA", group) ~ "#FFED6F",
-                                              grepl("CESC", group) ~ "#BEBADA",
-                                              grepl("CHOL", group) ~ "#FB8072",
-                                              grepl("COAD", group) ~ "#80B1D3",
-                                              grepl("ESCA", group) ~ "#FDB462",
                                               grepl("GBMx", group) ~ "#B3DE69",
-                                              grepl("HNSC", group) ~ "#FCCDE5",
-                                              grepl("KIRC", group) ~ "#D9D9D9",
-                                              grepl("KIRP", group) ~ "#BC80BD",
                                               grepl("LGGx", group) ~ "#CCEBC5"))
 
 ## modify this data-table to include bed files
 ## bed files
-bed_data = "/Users/venu/Desktop/work/TCGA_ATAC/bw/chr21_bed5"
+bed_data = "~/Desktop/work/TCGA_ATAC/bw/ALPS_example/example_bed"
 
 bed_data_list <- list.files(bed_data)
 
@@ -63,18 +41,20 @@ data_table2 <- bed_data_list %>%
   dplyr::left_join(data_table, by = "sample_id") %>%
   dplyr::select(sample_id, group, color_code, bw_path, bed_path)
 
+## copy bw and beds to extdata/bw
+for(i in bw_files){
+
+  file.copy(from = paste0("~/Desktop/work/TCGA_ATAC/bw/ALPS_example/example_bw/", i), to = "inst/extdata/bw")
+}
+
+##
+for(i in bed_data_list){
+
+  file.copy(from = paste0("~/Desktop/work/TCGA_ATAC/bw/ALPS_example/example_bed/", i), to = "inst/extdata/bw")
+}
+
+## use this table to prepare table with paths depending on the OS
 write.table(data_table2, file = "inst/extdata/bw/ALPS_example_datatable.txt", sep = "\t", row.names = FALSE, quote = FALSE)
-
-## sample set for genomic regions
-file.copy(from = "../VISITOR/ACCx_specific_chr21.bed", to = "inst/extdata/bw/ALPS_ACCx_example_GenomicRegions.bed")
-
-## subset above data_table to 20 samples to use as an example for `plot_browser_tracks`
-set.seed(123)
-data_table_bt <- data_table %>%
-  dplyr::sample_n(size = 20) %>%
-  dplyr::arrange(group)
-
-write.table(data_table_bt, file = "inst/extdata/bw/ALPS_example_datatable_browsertracks.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 
 ## motif files
 usethis::use_directory("inst/extdata/motifs")
@@ -104,10 +84,6 @@ usethis::use_directory("inst/extdata/overlap_violins")
 write.table(enrichemnts_4_overlapviolins, file = "inst/extdata/overlap_violins/enrichemnts_4_overlapviolins.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 write.table(data_table_4_overlapviolins, file = "inst/extdata/overlap_violins/data_table_4_overlapviolins.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 
-#usethis::use_data(enrichemnts_4_overlapviolins, overwrite = TRUE)
-#usethis::use_data(data_table_4_overlapviolins, overwrite = TRUE)
-
-## in future add, deeptools|ngs.plot|homer metagene example files
 
 
 

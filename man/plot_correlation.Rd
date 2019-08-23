@@ -30,38 +30,28 @@ Function to calculate correlations of ChIP/ATAC-seq enrichment among replicates/
 \examples{
 
 ## load example data
-## devtools::install_github("itsvenu/ALPSdata")
+## load example data
 
-## bigwig files
-chr21_bw_zip <- system.file("extdata", "chr21.bw.tar.gz", package = "ALPSdata", mustWork = TRUE)
-
-## untar into the current working dir under 'test_bw'
-untar(chr21_bw_zip, exdir = "~/Desktop/test_bw")
-
-## bed files
-chr21_bed_zip <- system.file("extdata", "chr21.bed.tar.gz", package = "ALPSdata", mustWork = TRUE)
-
-untar(chr21_bed_zip, exdir = "~/Desktop/test_bed")
 chr21_data_table <- system.file("extdata/bw", "ALPS_example_datatable.txt", package = "ALPS", mustWork = TRUE)
+
+## attach path to bw_path and bed_path
+d_path <- dirname(chr21_data_table)
+
 chr21_data_table <- read.delim(chr21_data_table, header = TRUE)
-chr21_data_table$bw_path <- paste0("~/Desktop/test_bw/", chr21_data_table$bw_path)
-chr21_data_table$bed_path <- paste0("~/Desktop/test_bed/", chr21_data_table$bed_path)
+chr21_data_table$bw_path <- paste0(d_path, "/", chr21_data_table$bw_path)
+chr21_data_table$bed_path <- paste0(d_path, "/", chr21_data_table$bed_path)
 
-chr21_data_table \%>\% head
-
-enrichments_df <- multiBigwig_summary(data_table = chr21_data_table,
+enrichments <- multiBigwig_summary(data_table = chr21_data_table,
                                    summary_type = "mean",
-                                   parallel = FALSE)
-
-## subset to only ACCx samples
-ACCx_all_replicates <- enrichments_df \%>\% dplyr::select(chr:ACCx_5)
-ACCx_meta <- chr21_data_table \%>\% dplyr::filter(group == "ACCx")
+                                   parallel = TRUE)
 
 ## replicate_level correlation plot
-plot_correlation(enrichments_df = ACCx_all_replicates, log_transform = TRUE, plot_type = "replicate_level", sample_metadata = ACCx_meta)
+plot_correlation(enrichments_df = enrichments,
+log_transform = TRUE, plot_type = "replicate_level",
+sample_metadata = chr21_data_table)
 
 ## group_level correlation plot
-enrichments_df_grouplevel <- enrichments_df \%>\% dplyr::select(chr:CESC_5)
-grouplevel_meta <- chr21_data_table \%>\% head(n = 20)
-plot_correlation(enrichments_df = enrichments_df_grouplevel, log_transform = TRUE, plot_type = "group_level", sample_metadata = grouplevel_meta)
+plot_correlation(enrichments_df = enrichments,
+log_transform = TRUE, plot_type = "group_level",
+sample_metadata = chr21_data_table)
 }

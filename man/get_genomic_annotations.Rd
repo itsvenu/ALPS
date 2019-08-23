@@ -27,15 +27,14 @@ annotate genomic regions by simultaneosuly merging overlaping regions and
 preparing consensus set of genomic regions from multiple files
 }
 \examples{
-## devtools::install_github("itsvenu/ALPSdata")
-
-## bed files
-chr21_bed_zip <- system.file("extdata", "chr21.bed.tar.gz", package = "ALPSdata", mustWork = TRUE)
-
-untar(chr21_bed_zip, exdir = "~/Desktop/test_bed")
 chr21_data_table <- system.file("extdata/bw", "ALPS_example_datatable.txt", package = "ALPS", mustWork = TRUE)
+
+## attach path to bw_path and bed_path
+d_path <- dirname(chr21_data_table)
+
 chr21_data_table <- read.delim(chr21_data_table, header = TRUE)
-chr21_data_table$bed_path <- paste0("~/Desktop/test_bed/", chr21_data_table$bed_path)
+chr21_data_table$bw_path <- paste0(d_path, "/", chr21_data_table$bw_path)
+chr21_data_table$bed_path <- paste0(d_path, "/", chr21_data_table$bed_path)
 
 get_genomic_annotations(data_table = chr21_data_table,
 merge_level = "group_level")

@@ -27,29 +27,19 @@
 #' @examples
 #'
 #' ## load example data
-#' ## devtools::install_github("itsvenu/ALPSdata")
 #'
-#' ## bigwig files
-#' chr21_bw_zip <- system.file("extdata", "chr21.bw.tar.gz", package = "ALPSdata", mustWork = TRUE)
-#'
-#' ## untar into the current working dir under 'test_bw'
-#' untar(chr21_bw_zip, exdir = "~/Desktop/test_bw")
-#'
-#' ## bed files
-#' chr21_bed_zip <- system.file("extdata", "chr21.bed.tar.gz", package = "ALPSdata", mustWork = TRUE)
-#'
-#' untar(chr21_bed_zip, exdir = "~/Desktop/test_bed")
-#
 #' chr21_data_table <- system.file("extdata/bw", "ALPS_example_datatable.txt", package = "ALPS", mustWork = TRUE)
-#' chr21_data_table <- read.delim(chr21_data_table, header = TRUE)
-#' chr21_data_table$bw_path <- paste0("~/Desktop/test_bw/", chr21_data_table$bw_path)
-#' chr21_data_table$bed_path <- paste0("~/Desktop/test_bed/", chr21_data_table$bed_path)
 #'
-#' chr21_data_table %>% head
+#' ## attach path to bw_path and bed_path
+#' d_path <- dirname(chr21_data_table)
+#'
+#' chr21_data_table <- read.delim(chr21_data_table, header = TRUE)
+#' chr21_data_table$bw_path <- paste0(d_path, "/", chr21_data_table$bw_path)
+#' chr21_data_table$bed_path <- paste0(d_path, "/", chr21_data_table$bed_path)
 #'
 #' enrichments <- multiBigwig_summary(data_table = chr21_data_table,
 #'                                    summary_type = "mean",
-#'                                    parallel = FALSE)
+#'                                    parallel = TRUE)
 
 multiBigwig_summary <- function(data_table = NULL,
                                 summary_type = "mean",

@@ -70,13 +70,7 @@ devtools::install_github("itsvenu/ALPS")
 
 # Example usecases with ALPS
 
-To demonstrate the utility of different functions, `ALPS` package comes with a set of example files that were taken from TCGA consortium's ATAC-seq data from [here](https://gdc.cancer.gov/about-data/publications/ATACseq-AWG) published at [@TCGA_ATAC]. All the example bigwig and bed files are compiled into a small R package, [`ALPSdata`](https://github.com/itsvenu/ALPSdata). One can install `ALPSdata` package with the following commands
-
-```{r eval=FALSE}
-devtools::install_github("itsvenu/ALPSdata")
-```
-
-or download example files from this [link](https://github.com/itsvenu/ALPSdata/tree/master/inst/extdata)
+To demonstrate the utility of different functions, `ALPS` package comes with a set of example files that were taken from TCGA consortium's ATAC-seq data from [here](https://gdc.cancer.gov/about-data/publications/ATACseq-AWG) published at [@TCGA_ATAC]. 
 
 Following steps walk you through loading the example data and how to use different function and how to integrate function's output with other R/bioconductor packages to ease the workflow process.
 
@@ -91,34 +85,17 @@ suppressMessages(library(ALPS))
 
 Most of the explorative analyses in epigenomics starts with quantifying enrichments or methylations at a set of genomic regions e.g. promoter regions or identified peak regions. This quantifications will be used as an input to downstream analyses such as PCA, clustering. The function `multiBigwig_summary` takes sample data table with bigwig paths and corresponding bed file paths calculates enrichments at genomic regions. This function is a wrapper around `rtracklayer` bigwig utilities [@rtracklayer_pub]. The function simultaneously generates the consensus peak-set from all the bed files present in input data table before calculating enrichments.
 
-The associated R package [`ALPSdata`](https://github.com/itsvenu/ALPSdata) contains an example dataset from TCGA ATAC-seq project. Either install the package with following code or just download the `zip` from [here](/Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPSdata/extdata/chr21.bw.tar.gz) and `untar` into the directory of your choice
-
-Either install the `ALPdata` as descibed above or download the zip files and unzip into the directory of your choice
-
-```{r eval=FALSE}
-## An example set of bigwig files are provided with 
-
-devtools::install_github("itsvenu/ALPSdata")
-
-## bigwig files
-chr21_bw_zip <- system.file("extdata", "chr21.bw.tar.gz", package = "ALPSdata", mustWork = TRUE)
-
-## untar into the current working dir under 'test_bw'
-untar(chr21_bw_zip, exdir = "~/Desktop/test_bw")
-
-## bed files
-chr21_bed_zip <- system.file("extdata", "chr21.bed.tar.gz", package = "ALPSdata", mustWork = TRUE)
-
-untar(chr21_bed_zip, exdir = "~/Desktop/test_bed")
-```
-
 Read data table from `ALPS` package
 
 ```{r}
 chr21_data_table <- system.file("extdata/bw", "ALPS_example_datatable.txt", package = "ALPS", mustWork = TRUE)
+
+## attach path to bw_path and bed_path
+d_path <- dirname(chr21_data_table)
+
 chr21_data_table <- read.delim(chr21_data_table, header = TRUE)
-chr21_data_table$bw_path <- paste0("~/Desktop/test_bw/", chr21_data_table$bw_path)
-chr21_data_table$bed_path <- paste0("~/Desktop/test_bed/", chr21_data_table$bed_path)
+chr21_data_table$bw_path <- paste0(d_path, "/", chr21_data_table$bw_path)
+chr21_data_table$bed_path <- paste0(d_path, "/", chr21_data_table$bed_path)
 
 chr21_data_table %>% head 
 
@@ -141,11 +118,11 @@ The function `get_variable_regions` takes the output of `multiBigwig_summary` or
 Following is an example on how to integrate `multiBigwig_summary` output to `ComplexHeatmap` via `get_variable_regions`
 
 
-```{r fig.width=7, fig.height=6.5, fig.align = "center"}
+```{r fig.width=5.5, fig.height=5, fig.align = "center"}
 enrichments_matrix <- get_variable_regions(enrichments_df = enrichments,
                                            log_transform = TRUE,
                                            scale = TRUE,
-                                           num_regions = 500)
+                                           num_regions = 100)
   
 suppressPackageStartupMessages(require(ComplexHeatmap))
 suppressPackageStartupMessages(require(circlize))
@@ -165,33 +142,21 @@ It is often of high interest in genome-wide quantitative data to check the corre
 
 ```{r fig.align="center", fig.height=5, fig.width=5}
 
-## subset `enrichments` to a few samples to demonstrate the example
-
-ACCx_all_replicates <- enrichments %>% dplyr::select(chr:ACCx_5)
-ACCx_meta <- chr21_data_table %>% 
-  dplyr::filter(group == "ACCx")
-
-plot_correlation(enrichments_df = ACCx_all_replicates, 
+plot_correlation(enrichments_df = enrichments, 
                  log_transform = TRUE, 
                  plot_type = "replicate_level", 
-                 sample_metadata = ACCx_meta)
+                 sample_metadata = chr21_data_table)
 
 ```
 
 Instead of correlations of replicates within and across groups, one can also do group level correlations after averaging all samples within a group. The argument `plot_type = "group_level"` in `plot_correlation` exactly does this.
 
-```{r fig.align="center", fig.height=5, fig.width=5}
+```{r fig.align="center", fig.height=5, fig.width=5.5}
 ## group_level
-
-## subset to 20 samples and 4 groups to demonstrate
-
-enrichments_df_grouplevel <- enrichments %>% dplyr::select(chr:CESC_5)
-grouplevel_meta <- chr21_data_table %>% head(n = 20)
-
-plot_correlation(enrichments_df = enrichments_df_grouplevel, 
+plot_correlation(enrichments_df = enrichments, 
                  log_transform = TRUE, 
                  plot_type = "group_level", 
-                 sample_metadata = grouplevel_meta)
+                 sample_metadata = chr21_data_table)
 ```
 
 Either `replicate_level` or `group_level` plot appearance can be further modified with arguments that passed to  [`corrplot::corrplot`](https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html) or [`GGally::ggpairs`](https://ggobi.github.io/ggally/#ggallyggpairs) respectively.
@@ -254,17 +219,11 @@ To circumvent this problem, several R/bioconductor packages were designed (e.g. 
 
 Following code snippet illustrates how one can use this function
 
-```{r fig.height=10, fig.width=7, fig.align="center"}
-## subset to 10 samples to demonstrate
-set.seed(12345)
-chr21_10samples <- chr21_data_table %>%
-dplyr::sample_n(size = 10) %>%
-dplyr::arrange(desc(group))
-
+```{r fig.height=6, fig.width=6.5, fig.align="center"}
 ## gene_range
-gene_range = "chr21:33025845-33129196"
+gene_range = "chr21:45643725-45942454"
 
-plot_browser_tracks(data_table = chr21_10samples,
+plot_browser_tracks(data_table = chr21_data_table,
                     gene_range = gene_range, 
                     ref_gen = "hg38")
 ```
@@ -294,12 +253,12 @@ g_annotations %>% head
 
 The results returned from `get_genomic_annotations` can directly be passed to the function `plot_genomic_annotations` to visualize the percentages of peaks in each feature. The function can produce visualizations either as bar plot or heatmap
 
-```{r fig.height=5, fig.width=9, fig.align="center"}
+```{r fig.height=5, fig.width=5.5, fig.align="center"}
 plot_genomic_annotations(annotations_df = g_annotations, plot_type = "heatmap")
 
 ```
 
-```{r fig.height=4, fig.width=8, fig.align="center"}
+```{r fig.height=4, fig.width=5.5, fig.align="center"}
 plot_genomic_annotations(annotations_df = g_annotations, plot_type = "bar")
 ```
 

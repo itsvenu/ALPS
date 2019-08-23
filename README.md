@@ -1,7 +1,7 @@
 ALPS - AnaLysis routines for ePigenomicS data
 ================
 Venu Thatikonda
-2019-08-21
+2019-08-23
 
 -   [ALPS-Introduction](#alps-introduction)
     -   [Bigwig files](#bigwig-files)
@@ -33,8 +33,6 @@ Bigwig files evolved to be a multi-purpose compressed binary format to store gen
 <p align="center">
 <img src="man/figures/README-bigwig-overview.png" width="70%" />
 </p>
-
-
 Generate bigwig files
 ---------------------
 
@@ -52,8 +50,6 @@ Following is the overview of the `ALPS` workflow and available functions
 <p align="center">
 <img src="man/figures/README-ALPS-overview.png" width="100%" />
 </p>
-
-
 Installation
 ============
 
@@ -66,13 +62,7 @@ devtools::install_github("itsvenu/ALPS")
 Example usecases with ALPS
 ==========================
 
-To demonstrate the utility of different functions, `ALPS` package comes with a set of example files that were taken from TCGA consortium's ATAC-seq data from [here](https://gdc.cancer.gov/about-data/publications/ATACseq-AWG) published at (Corces et al. 2018). All the example bigwig and bed files are compiled into a small R package, [`ALPSdata`](https://github.com/itsvenu/ALPSdata). One can install `ALPSdata` package with the following commands
-
-``` r
-devtools::install_github("itsvenu/ALPSdata")
-```
-
-or download example files from this [link](https://github.com/itsvenu/ALPSdata/tree/master/inst/extdata)
+To demonstrate the utility of different functions, `ALPS` package comes with a set of example files that were taken from TCGA consortium's ATAC-seq data from [here](https://gdc.cancer.gov/about-data/publications/ATACseq-AWG) published at (Corces et al. 2018).
 
 Following steps walk you through loading the example data and how to use different function and how to integrate function's output with other R/bioconductor packages to ease the workflow process.
 
@@ -87,57 +77,40 @@ Calculate enrichments at genomic regions
 
 Most of the explorative analyses in epigenomics starts with quantifying enrichments or methylations at a set of genomic regions e.g. promoter regions or identified peak regions. This quantifications will be used as an input to downstream analyses such as PCA, clustering. The function `multiBigwig_summary` takes sample data table with bigwig paths and corresponding bed file paths calculates enrichments at genomic regions. This function is a wrapper around `rtracklayer` bigwig utilities (Lawrence, Gentleman, and Carey 2009). The function simultaneously generates the consensus peak-set from all the bed files present in input data table before calculating enrichments.
 
-The associated R package [`ALPSdata`](https://github.com/itsvenu/ALPSdata) contains an example dataset from TCGA ATAC-seq project. Either install the package with following code or just download the `zip` from [here](/Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPSdata/extdata/chr21.bw.tar.gz) and `untar` into the directory of your choice
-
-Either install the `ALPdata` as descibed above or download the zip files and unzip into the directory of your choice
-
-``` r
-## An example set of bigwig files are provided with 
-
-devtools::install_github("itsvenu/ALPSdata")
-
-## bigwig files
-chr21_bw_zip <- system.file("extdata", "chr21.bw.tar.gz", package = "ALPSdata", mustWork = TRUE)
-
-## untar into the current working dir under 'test_bw'
-untar(chr21_bw_zip, exdir = "~/Desktop/test_bw")
-
-## bed files
-chr21_bed_zip <- system.file("extdata", "chr21.bed.tar.gz", package = "ALPSdata", mustWork = TRUE)
-
-untar(chr21_bed_zip, exdir = "~/Desktop/test_bed")
-```
-
 Read data table from `ALPS` package
 
 ``` r
 chr21_data_table <- system.file("extdata/bw", "ALPS_example_datatable.txt", package = "ALPS", mustWork = TRUE)
+
+## attach path to bw_path and bed_path
+d_path <- dirname(chr21_data_table)
+
 chr21_data_table <- read.delim(chr21_data_table, header = TRUE)
-chr21_data_table$bw_path <- paste0("~/Desktop/test_bw/", chr21_data_table$bw_path)
-chr21_data_table$bed_path <- paste0("~/Desktop/test_bed/", chr21_data_table$bed_path)
+chr21_data_table$bw_path <- paste0(d_path, "/", chr21_data_table$bw_path)
+chr21_data_table$bed_path <- paste0(d_path, "/", chr21_data_table$bed_path)
 
 chr21_data_table %>% head 
 #>   sample_id group color_code
 #> 1    ACCx_1  ACCx    #8DD3C7
 #> 2    ACCx_2  ACCx    #8DD3C7
-#> 3    ACCx_3  ACCx    #8DD3C7
-#> 4    ACCx_4  ACCx    #8DD3C7
-#> 5    ACCx_5  ACCx    #8DD3C7
-#> 6    BLCA_1  BLCA    #FFFFB3
-#>                                                                                                    bw_path
-#> 1 ~/Desktop/test_bw/ACCx_025FE5F8_885E_433D_9018_7AE322A92285_X034_S09_L133_B1_T1_PMRG.insertions.chr21.bw
-#> 2 ~/Desktop/test_bw/ACCx_025FE5F8_885E_433D_9018_7AE322A92285_X034_S09_L134_B1_T2_PMRG.insertions.chr21.bw
-#> 3 ~/Desktop/test_bw/ACCx_2A5AE757_20D5_49B6_95FF_CAE08E8197A0_X012_S05_L033_B1_T1_P024.insertions.chr21.bw
-#> 4 ~/Desktop/test_bw/ACCx_2A5AE757_20D5_49B6_95FF_CAE08E8197A0_X012_S05_L034_B1_T2_P025.insertions.chr21.bw
-#> 5 ~/Desktop/test_bw/ACCx_3D0CD3BD_3960_46FB_92C3_777F11CCD0FC_X011_S06_L011_B1_T1_P024.insertions.chr21.bw
-#> 6 ~/Desktop/test_bw/BLCA_1067A79F_15D6_4D64_BBC3_268BE15434A1_X019_S01_L048_B1_T1_P041.insertions.chr21.bw
-#>                        bed_path
-#> 1 ~/Desktop/test_bed/ACCx_1.bed
-#> 2 ~/Desktop/test_bed/ACCx_2.bed
-#> 3 ~/Desktop/test_bed/ACCx_3.bed
-#> 4 ~/Desktop/test_bed/ACCx_4.bed
-#> 5 ~/Desktop/test_bed/ACCx_5.bed
-#> 6 ~/Desktop/test_bed/BLCA_1.bed
+#> 3    BRCA_1  BRCA    #FFED6F
+#> 4    BRCA_2  BRCA    #FFED6F
+#> 5    GBMx_1  GBMx    #B3DE69
+#> 6    GBMx_2  GBMx    #B3DE69
+#>                                                                                                                                                                 bw_path
+#> 1 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/ACCx_025FE5F8_885E_433D_9018_7AE322A92285_X034_S09_L133_B1_T1_PMRG.insertions.chr21.bw
+#> 2 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/ACCx_025FE5F8_885E_433D_9018_7AE322A92285_X034_S09_L134_B1_T2_PMRG.insertions.chr21.bw
+#> 3 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/BRCA_000CFD9F_ADDF_4304_9E60_6041549E189C_X017_S06_L012_B1_T2_P046.insertions.chr21.bw
+#> 4 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/BRCA_01112370_4F6F_4A20_9BE0_7975C3465268_X017_S04_L007_B1_T1_P042.insertions.chr21.bw
+#> 5 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/GBMx_09C0DCE7_D669_4D28_980D_BF71179116A4_X008_S01_L001_B1_T1_P017.insertions.chr21.bw
+#> 6 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/GBMx_09C0DCE7_D669_4D28_980D_BF71179116A4_X008_S01_L002_B1_T2_P020.insertions.chr21.bw
+#>                                                                                    bed_path
+#> 1 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/ACCx_1.bed
+#> 2 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/ACCx_2.bed
+#> 3 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/BRCA_1.bed
+#> 4 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/BRCA_2.bed
+#> 5 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/GBMx_1.bed
+#> 6 /Library/Frameworks/R.framework/Versions/3.6/Resources/library/ALPS/extdata/bw/GBMx_2.bed
 ```
 
 Now run the function `multiBigwig_summary` to calculate enrichments from all bigwig files by simultaneosly preparing consensus peak-set from all bed files in the column `bed_path`
@@ -148,76 +121,20 @@ enrichments <- multiBigwig_summary(data_table = chr21_data_table,
                                    parallel = FALSE)
 
 enrichments %>% head
-#>     chr   start     end    ACCx_1     ACCx_2    ACCx_3     ACCx_4
-#> 1 chr21 5101659 5102227  0.000000  0.8467141  1.567046  0.2178949
-#> 2 chr21 5128223 5128741 30.475477 33.5694574 17.588168 16.1965192
-#> 3 chr21 5154593 5155112 41.840598 42.9766647 60.513192 46.3502710
-#> 4 chr21 5220488 5221005  8.703860  7.7783233  9.252152  8.8295437
-#> 5 chr21 5221136 5221912  2.610116  2.4166317  2.971088  3.5790486
-#> 6 chr21 5223327 5223826  1.630831  1.1297720  1.872463  0.6744632
-#>      ACCx_5     BLCA_1    BLCA_2    BLCA_3    BLCA_4    BLCA_5    BRCA_1
-#> 1  1.137165  0.9976027  1.059827  1.244984  2.015025  2.229164  3.533704
-#> 2 39.529871  6.0722826  6.411479 24.523147 23.752792 37.439103 26.398375
-#> 3 57.146313 35.7697966 25.473831 36.555045 41.893151 72.594668 44.188505
-#> 4 13.283552  8.8630107  6.886004  6.267982  5.243582  1.087895  5.601173
-#> 5  2.831350  2.6577343  2.146420  2.859719  5.180869  1.695390  6.417607
-#> 6  1.478964  1.2987511  0.911972  1.719041  3.045235  1.319130  2.589753
-#>      BRCA_2     BRCA_3    BRCA_4    BRCA_5    CESC_1    CESC_2    CESC_3
-#> 1  1.160183  2.3581712  5.209958  5.072265  3.092465  2.725403  5.510832
-#> 2 22.886272 21.8429775 27.332752 32.442910 19.546902 12.536179 17.199159
-#> 3 67.446661 58.4866168 37.210027 52.047384 69.582778 73.409008 39.015989
-#> 4  2.462669  0.9717704  3.300053  1.697417  3.483165  4.088111  7.333301
-#> 5  2.699331  2.5288946  1.629308  1.703534  3.865538  5.523995  4.890856
-#> 6  1.624970  0.9711455  2.361853  1.121653  1.082838  2.949880  6.886405
-#>      CESC_4    CESC_5    CHOL_1    CHOL_2    CHOL_3    CHOL_4     CHOL_5
-#> 1 10.206564  7.288318  5.363220  3.640505  3.803695  3.171674   7.413134
-#> 2 18.383753 10.822305 22.534334 19.249121 20.449929 26.409566  53.761126
-#> 3 36.167775 17.402405 15.618748 15.666742 61.426400 58.103841 119.573024
-#> 4  4.826827  8.029990  5.052139 10.151576 15.448449  9.660975   7.429400
-#> 5  5.235947  7.995854  5.989011  6.653462  8.057937 16.165497   3.079739
-#> 6  2.445278 11.058808  3.008055  3.633910  6.745877  5.774985   2.256772
-#>       COAD_1     COAD_2     COAD_3    COAD_4     COAD_5    ESCA_1
-#> 1  6.9119931  5.8092891  5.4476667  3.839964  7.8269009  7.143104
-#> 2 34.8325616 32.9640743 30.5784375 35.389696 47.7085152 28.773963
-#> 3 74.5842879 58.4294842 16.5706752 14.511065 70.7703898 47.726215
-#> 4  1.4505026  0.9786165  3.0462211  4.400119  1.5418798 11.273231
-#> 5  1.7183017  1.2556133  1.9902176  3.153347  1.9621084 10.075468
-#> 6  0.7272145  0.4933560  0.9663071  1.713330  0.9710562  5.443868
-#>      ESCA_2    ESCA_3    ESCA_4     ESCA_5    GBMx_1    GBMx_2    GBMx_3
-#> 1  4.382974  3.071685  4.247090  1.9694161  7.935716  9.045130 12.705212
-#> 2 33.860149 14.128988 14.346610  3.5331509 27.503972 30.197911 26.927064
-#> 3 45.997436 28.756352 33.750266 40.2278915  9.523844  9.273796 57.628900
-#> 4  8.800505  7.273080  5.867105  1.4120555  4.892786  3.549286  7.396185
-#> 5  6.742553  6.453297  2.559973  0.2622201  4.761561  4.175357  6.411319
-#> 6  4.450576  3.495577  2.075220  0.6112352  1.666337  1.928950  2.662206
-#>      GBMx_4     GBMx_5    HNSC_1    HNSC_2    HNSC_3    HNSC_4     HNSC_5
-#> 1 22.228637  3.2659330  4.466189  4.730386 18.273367 23.908805  1.1273026
-#> 2 26.857904 50.3756069 31.666727 40.783546 45.807895 54.976352 24.3061497
-#> 3 70.951471 68.9019706 50.021090 56.952997 56.137807 54.506204 76.1745392
-#> 4  4.083111  5.0409156  8.215170  6.425001  4.354290  1.659714  2.9574537
-#> 5  6.658122  4.6167880  9.779114 11.239205  1.162025  4.320648  2.4765837
-#> 6  4.285417  0.8683719  4.223115  5.383179  3.232611  2.425601  0.9151142
-#>      KIRC_1    KIRC_2    KIRC_3     KIRC_4   KIRC_5     KIRP_1    KIRP_2
-#> 1  9.113261 11.154557  1.675309  0.5592981 1.594901  0.8546272  2.564206
-#> 2 39.400468 28.180278  2.641160  4.2922631 8.159912 20.8473875 18.151372
-#> 3 37.779408 29.771196 30.481885 29.1128987 9.889409 21.9762457 12.563430
-#> 4  6.236443  5.500435  4.935273  2.4912467 6.552211  4.7877273  6.726366
-#> 5  4.750641  7.721031  4.473648  3.8295367 3.680996  3.0165811  3.663067
-#> 6  1.367054  4.139311  3.001969  2.2276845 3.024996  0.4862829  2.735142
-#>      KIRP_3     KIRP_4     KIRP_5    LGGx_1    LGGx_2    LGGx_3    LGGx_4
-#> 1  3.215285  2.6990401  0.7866877  1.453374  3.878039  1.039637  1.958202
-#> 2 72.856962 75.4698422  8.1245283 44.904649 53.224897 46.766238 44.160777
-#> 3 88.896900 97.6896574 22.8690610 52.668725 69.288896 44.300821 31.969457
-#> 4  5.723286  6.9427712  6.4565771  8.515699  4.574574  7.987025 12.063514
-#> 5  2.868832  2.7212769  3.9443258  6.296368  5.200836 15.615369 12.865358
-#> 6  1.374916  0.9752828  2.1545697  6.600722  3.952127  5.696175  7.650956
-#>      LGGx_5
-#> 1  3.922047
-#> 2 66.290031
-#> 3 92.391528
-#> 4  4.810817
-#> 5  3.752916
-#> 6  1.115822
+#>     chr    start      end      ACCx_1       ACCx_2    BRCA_1    BRCA_2
+#> 1 chr21 45639550 45640549   3.4293169   4.30173375  6.229088  6.053632
+#> 2 chr21 45640994 45641493   5.1058709   4.39355741  2.412814  3.262252
+#> 3 chr21 45642859 45643914 118.9869371 132.23839670 63.987536 82.130318
+#> 4 chr21 45668163 45668662   0.3810360   0.02440864  4.359150  1.732686
+#> 5 chr21 45689906 45690405   0.4229491   0.81362319  2.638012  0.923278
+#> 6 chr21 45698386 45698910  46.5824657  54.70859597  1.141300  1.746901
+#>       GBMx_1    GBMx_2     LGGx_1     LGGx_2
+#> 1  6.2633310  8.964782  8.0253673  6.3168158
+#> 2  6.2341950  5.569840  2.2929616  4.2814719
+#> 3 23.8171352 29.146589 57.2475263 50.2498071
+#> 4  0.6438128  1.015109  0.8307302  0.9188698
+#> 5  1.1011821  0.723354  2.4658742  1.0604877
+#> 6 24.9284784 21.264368  2.8639639  2.1893534
 ```
 
 With little teaking, the output from `multiBigwig_summary` can be very easily integrated with other R/bioconductor packages for explorative analysis, PCA or clustering.
@@ -230,7 +147,7 @@ Following is an example on how to integrate `multiBigwig_summary` output to `Com
 enrichments_matrix <- get_variable_regions(enrichments_df = enrichments,
                                            log_transform = TRUE,
                                            scale = TRUE,
-                                           num_regions = 500)
+                                           num_regions = 100)
   
 suppressPackageStartupMessages(require(ComplexHeatmap))
 suppressPackageStartupMessages(require(circlize))
@@ -243,7 +160,7 @@ Heatmap(enrichments_matrix, name = "enrichments",
     column_names_gp =  gpar(fontsize = 8))
 ```
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-markdown_github/unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
 
 Perform correlation among replicates/groups
 -------------------------------------------
@@ -252,37 +169,25 @@ It is often of high interest in genome-wide quantitative data to check the corre
 
 ``` r
 
-## subset `enrichments` to a few samples to demonstrate the example
-
-ACCx_all_replicates <- enrichments %>% dplyr::select(chr:ACCx_5)
-ACCx_meta <- chr21_data_table %>% 
-  dplyr::filter(group == "ACCx")
-
-plot_correlation(enrichments_df = ACCx_all_replicates, 
+plot_correlation(enrichments_df = enrichments, 
                  log_transform = TRUE, 
                  plot_type = "replicate_level", 
-                 sample_metadata = ACCx_meta)
+                 sample_metadata = chr21_data_table)
 ```
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-9-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-markdown_github/unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
 
 Instead of correlations of replicates within and across groups, one can also do group level correlations after averaging all samples within a group. The argument `plot_type = "group_level"` in `plot_correlation` exactly does this.
 
 ``` r
 ## group_level
-
-## subset to 20 samples and 4 groups to demonstrate
-
-enrichments_df_grouplevel <- enrichments %>% dplyr::select(chr:CESC_5)
-grouplevel_meta <- chr21_data_table %>% head(n = 20)
-
-plot_correlation(enrichments_df = enrichments_df_grouplevel, 
+plot_correlation(enrichments_df = enrichments, 
                  log_transform = TRUE, 
                  plot_type = "group_level", 
-                 sample_metadata = grouplevel_meta)
+                 sample_metadata = chr21_data_table)
 ```
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-10-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-markdown_github/unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
 
 Either `replicate_level` or `group_level` plot appearance can be further modified with arguments that passed to [`corrplot::corrplot`](https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html) or [`GGally::ggpairs`](https://ggobi.github.io/ggally/#ggallyggpairs) respectively.
 
@@ -302,7 +207,7 @@ plot_enrichments(enrichments_df = enrichments,
                  sample_metadata = chr21_data_table)
 ```
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-11-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-markdown_github/unnamed-chunk-9-1.png" style="display: block; margin: auto;" />
 
 If `plot_type = "overlap"`, function plots box plots along with overlap violins to show the distributions in paired conditions. The `sample_metadata` for these plots require one more additional column which describes sample status. See the following example
 
@@ -357,7 +262,7 @@ plot_enrichments(enrichments_df = enrichemnts_4_overlapviolins,
                  overlap_order = c("untreated", "treated"))
 ```
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-13-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-markdown_github/unnamed-chunk-11-1.png" style="display: block; margin: auto;" />
 
 There are additional arguments available for both `separate` and `overlap` to modify the appearance (please check `?plot_enrichments`), moreover the function returns a `ggplot2` object which enables the user to change additional components of the plot.
 
@@ -371,21 +276,15 @@ To circumvent this problem, several R/bioconductor packages were designed (e.g. 
 Following code snippet illustrates how one can use this function
 
 ``` r
-## subset to 10 samples to demonstrate
-set.seed(12345)
-chr21_10samples <- chr21_data_table %>%
-dplyr::sample_n(size = 10) %>%
-dplyr::arrange(desc(group))
-
 ## gene_range
-gene_range = "chr21:33025845-33129196"
+gene_range = "chr21:45643725-45942454"
 
-plot_browser_tracks(data_table = chr21_10samples,
+plot_browser_tracks(data_table = chr21_data_table,
                     gene_range = gene_range, 
                     ref_gen = "hg38")
 ```
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-14-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-markdown_github/unnamed-chunk-12-1.png" style="display: block; margin: auto;" />
 
 Annotate genomic regions
 ------------------------
@@ -406,27 +305,13 @@ g_annotations <- get_genomic_annotations(data_table = chr21_data_table,
                                          merge_level = "group_level")
 
 g_annotations %>% head
-#>      Feature       ACCx       BLCA       BRCA      CESC       CHOL
-#> 1   Promoter 32.9449153 27.8439153 21.3460231 33.712660 36.6896552
-#> 2     5' UTR  0.4237288  0.3968254  0.3399048  0.568990  0.4137931
-#> 3     3' UTR  1.9067797  1.9841270  2.0054385  1.137980  1.5172414
-#> 4   1st Exon  1.1652542  1.5211640  1.4615908  1.564723  1.2413793
-#> 5 Other Exon  4.2372881  4.6957672  4.9286200  4.694168  4.5517241
-#> 6 1st Intron 10.5932203 11.9047619 14.7858600  8.961593  9.3793103
-#>         COAD       ESCA       GBMx       HNSC       KIRC       KIRP
-#> 1 28.5143238 29.8943948 39.1566265 26.4612954 32.3296355 28.7807737
-#> 2  0.3997335  0.4061738  0.1204819  0.4739336  0.3961965  0.4689332
-#> 3  1.6655563  1.1372868  1.6867470  1.5007899  1.9809826  1.7584994
-#> 4  1.5323118  1.5434606  0.9638554  1.3428120  1.4263074  1.2895662
-#> 5  5.2631579  5.0365556  3.1325301  4.2654028  4.1996830  3.9273154
-#> 6 12.1252498 10.2355808 11.8072289 10.5055292 11.8066561 13.0128957
-#>         LGGx
-#> 1 37.2900336
-#> 2  0.1119821
-#> 3  1.9036954
-#> 4  1.1198208
-#> 5  3.0235162
-#> 6 12.8779395
+#>      Feature      ACCx       BRCA      GBMx      LGGx
+#> 1   Promoter 45.762712 31.2977099 41.666667 41.666667
+#> 2     5' UTR  1.694915  0.7633588        NA        NA
+#> 3     3' UTR  6.779661  3.8167939  6.250000  5.000000
+#> 4   1st Exon  1.694915  1.5267176  4.166667  5.000000
+#> 5 Other Exon  8.474576  9.1603053  6.250000  6.666667
+#> 6 1st Intron  5.084746  3.0534351        NA  3.333333
 ```
 
 Plot genomic annotations
@@ -438,13 +323,14 @@ The results returned from `get_genomic_annotations` can directly be passed to th
 plot_genomic_annotations(annotations_df = g_annotations, plot_type = "heatmap")
 ```
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-16-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-markdown_github/unnamed-chunk-14-1.png" style="display: block; margin: auto;" />
 
 ``` r
 plot_genomic_annotations(annotations_df = g_annotations, plot_type = "bar")
+#> Warning: Removed 4 rows containing missing values (position_stack).
 ```
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-17-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-markdown_github/unnamed-chunk-15-1.png" style="display: block; margin: auto;" />
 
 Plot motif representations
 --------------------------
@@ -463,7 +349,7 @@ plot_motif_logo(motif_path = myc_transfac,
                 plot_type = "bar")
 ```
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-18-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-markdown_github/unnamed-chunk-16-1.png" style="display: block; margin: auto;" />
 
 ``` r
 
@@ -473,7 +359,7 @@ plot_motif_logo(motif_path = myc_transfac,
                 plot_type = "logo")
 ```
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-18-2.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-markdown_github/unnamed-chunk-16-2.png" style="display: block; margin: auto;" />
 
 Acknowledgements
 ================
