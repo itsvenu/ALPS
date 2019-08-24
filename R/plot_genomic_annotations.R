@@ -13,8 +13,8 @@
 #' If provided these colors are used, if not \code{pals::polychrome}
 #' colors will be used. Default \code{NULL}
 #'
-#' @importFrom pals polychrome
 #' @importFrom reshape2 melt
+#' @importFrom utils head
 #'
 #' @return \code{ggplot2} plot
 #'
@@ -22,7 +22,6 @@
 #'
 #' @examples
 #'
-#' ## load example data
 #' ## load example data
 #'
 #' chr21_data_table <- system.file("extdata/bw", "ALPS_example_datatable.txt", package = "ALPS", mustWork = TRUE)
@@ -49,12 +48,19 @@ plot_genomic_annotations <- function(annotations_df = NULL,
     col_pal <- col
   } else {
 
+    dist_cols <- c("#e6194B", "#3cb44b", "#ffe119", "#4363d8",
+                   "#f58231", "#911eb4", "#42d4f4", "#f032e6",
+                   "#bfef45", "#fabebe", "#469990", "#e6beff",
+                   "#9A6324", "#fffac8", "#800000", "#aaffc3",
+                   "#808000", "#ffd8b1", "#000075", "#a9a9a9",
+                   "#ffffff", "#000000")
+
     feature_names <- annotations_df$Feature %>%
       as.character() %>% unique
 
     num_features <- feature_names %>% length
 
-    col_pal <- pals::polychrome(n = num_features)
+    col_pal <- dist_cols %>% utils::head(n = num_features)
     names(col_pal) <- feature_names
   }
 

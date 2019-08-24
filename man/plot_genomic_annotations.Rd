@@ -30,7 +30,6 @@ directly or it is also compatible with a similar data.frame.
 \examples{
 
 ## load example data
-## load example data
 
 chr21_data_table <- system.file("extdata/bw", "ALPS_example_datatable.txt", package = "ALPS", mustWork = TRUE)
 
