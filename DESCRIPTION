@@ -1,6 +1,6 @@
 Package: ALPS
 Title: AnaLysis routines for ePigenomicS data
-Version: 0.99.1
+Version: 0.99.2
 Author: Venu Thatikonda, Natalie Jäger
 Maintainer: Venu Thatikonda <thatikonda92@gmail.com>
 Description: ALPS is an R package that provides tools for the analysis and visualization, mainly aimed at epigenomics data.
