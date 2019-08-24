@@ -10,7 +10,7 @@
 #' @param plot_type either \code{bar} plot or \code{heatmap},
 #' default \code{bar}
 #' @param col vector of colors for each feature in \code{annotations_df}.
-#' If provided these colors are used, if not \code{pals::polychrome}
+#' If provided these colors are used, if not a custom set of distinct
 #' colors will be used. Default \code{NULL}
 #'
 #' @importFrom reshape2 melt

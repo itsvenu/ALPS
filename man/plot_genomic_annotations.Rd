@@ -15,7 +15,7 @@ It can either be of one sample or of multiple samples as a data.frame}
 default \code{bar}}
 
 \item{col}{vector of colors for each feature in \code{annotations_df}.
-If provided these colors are used, if not \code{pals::polychrome}
+If provided these colors are used, if not a custom set of distinct
 colors will be used. Default \code{NULL}}
 }
 \value{
