@@ -1,6 +1,10 @@
 #' Correlations among replicates/groups
 #'
-#' @description Function to calculate correlations of ChIP/ATAC-seq enrichment among replicates/samples or groups. The function is compatible with the output of \code{\link{multiBigwig_summary}} or any custom data.frame with the similar format.
+#' @description Function to calculate correlations of ChIP/ATAC-seq
+#' enrichment among replicates/samples or groups.
+#' The function is compatible with the output of
+#' \code{\link{multiBigwig_summary}} or any custom data.frame
+#' with the similar format.
 #'
 #' @param enrichments_df dataframe of enrichments, usually in the form of the output from function \code{\link{multiBigwig_summary}}, default \code{NULL}
 #' @param log_transform logical, whether to log2 transform \code{enrichments_df}

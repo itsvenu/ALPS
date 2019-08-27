@@ -29,7 +29,9 @@ plot_enrichments(enrichments_df = NULL, log_transform = TRUE,
 \code{ggplot2} object
 }
 \description{
-Function to plot enrichments from ChIP-seq/ATAC-seq at genomics regions either as an individual groups or as paired condition e.g untreated-treated
+Function to plot enrichments from ChIP-seq/ATAC-seq at
+genomics regions either as an individual groups or as
+paired condition e.g untreated-treated
 }
 \examples{
 

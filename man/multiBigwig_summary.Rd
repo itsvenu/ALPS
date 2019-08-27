@@ -43,5 +43,5 @@ chr21_data_table$bed_path <- paste0(d_path, "/", chr21_data_table$bed_path)
 
 enrichments <- multiBigwig_summary(data_table = chr21_data_table,
                                    summary_type = "mean",
-                                   parallel = TRUE)
+                                   parallel = FALSE)
 }

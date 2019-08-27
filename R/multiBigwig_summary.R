@@ -39,7 +39,7 @@
 #'
 #' enrichments <- multiBigwig_summary(data_table = chr21_data_table,
 #'                                    summary_type = "mean",
-#'                                    parallel = TRUE)
+#'                                    parallel = FALSE)
 
 multiBigwig_summary <- function(data_table = NULL,
                                 summary_type = "mean",

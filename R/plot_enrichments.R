@@ -1,6 +1,8 @@
 #' Enrichment plots
 #'
-#' @description Function to plot enrichments from ChIP-seq/ATAC-seq at genomics regions either as an individual groups or as paired condition e.g untreated-treated
+#' @description Function to plot enrichments from ChIP-seq/ATAC-seq at
+#' genomics regions either as an individual groups or as
+#' paired condition e.g untreated-treated
 #'
 #' @param enrichments_df enrichments at genomics regions from all samples, as in the format of output from \code{\link{multiBigwig_summary}}
 #' @param log_transform logical. Should the data be \code{log2} transformed? Default is \code{TRUE}

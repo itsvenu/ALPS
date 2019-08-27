@@ -1,7 +1,7 @@
 ALPS - AnaLysis routines for ePigenomicS data
 ================
 Venu Thatikonda
-2019-08-23
+2019-08-27
 
 -   [ALPS-Introduction](#alps-introduction)
     -   [Bigwig files](#bigwig-files)

@@ -25,7 +25,11 @@ plot_correlation(enrichments_df, log_transform = TRUE,
 corrplot or ggplot2 object
 }
 \description{
-Function to calculate correlations of ChIP/ATAC-seq enrichment among replicates/samples or groups. The function is compatible with the output of \code{\link{multiBigwig_summary}} or any custom data.frame with the similar format.
+Function to calculate correlations of ChIP/ATAC-seq
+enrichment among replicates/samples or groups.
+The function is compatible with the output of
+\code{\link{multiBigwig_summary}} or any custom data.frame
+with the similar format.
 }
 \examples{
 

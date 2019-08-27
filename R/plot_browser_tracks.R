@@ -10,8 +10,11 @@ getChrStartEnd <- function(x){
 }
 
 #' UCSC Genome browser like plots
-#' @description Function to plot genome browser like plots given a very minimal information such as a set of bigwig files and a genomics region.
-#' Tracks are arranged as they are in given input data.frame. Function uses highly customizable Gviz R/bioconductor package to plot browser like plots.
+#' @description Function to plot genome browser like plots
+#' given a very minimal information such as a set of bigwig files
+#' and a genomics region. Tracks are arranged as they are in given
+#' input data.frame. Function uses highly customizable Gviz
+#' R/bioconductor package to plot browser like plots.
 #'
 #' @param data_table a dataframe that contains \code{bw_path}, \code{sample_id} and \code{color_code}. Tracks are colored according to \code{color_code}. Default \code{NULL}
 #' @param gene_range genomic region for which browser-like plots needed in format \code{chr:start-end}. Default \code{NULL}

@@ -24,8 +24,11 @@ plot_browser_tracks(data_table = NULL, gene_range = NULL,
 plot of genome browser tracks
 }
 \description{
-Function to plot genome browser like plots given a very minimal information such as a set of bigwig files and a genomics region.
-Tracks are arranged as they are in given input data.frame. Function uses highly customizable Gviz R/bioconductor package to plot browser like plots.
+Function to plot genome browser like plots
+given a very minimal information such as a set of bigwig files
+and a genomics region. Tracks are arranged as they are in given
+input data.frame. Function uses highly customizable Gviz
+R/bioconductor package to plot browser like plots.
 }
 \examples{
 
