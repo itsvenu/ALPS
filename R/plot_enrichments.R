@@ -15,6 +15,7 @@
 #'
 #' @importFrom dplyr mutate select rename left_join group_by summarise
 #' @importFrom reshape2 melt
+#' @importFrom gghalves geom_half_violin
 #'
 #' @return \code{ggplot2} object
 #'
@@ -52,9 +53,9 @@
 #' plot_type = "overlap", sample_metadata = data_table_4_overlapviolins)
 
 plot_enrichments <- function(enrichments_df = NULL, log_transform = TRUE,
-                             plot_type = "separate", sample_metadata,
-                             box_alpha = 0.8, violin_alpha = 0.8,
-                             x_order = NULL, overlap_order = NULL){
+                              plot_type = "separate", sample_metadata,
+                              box_alpha = 0.8, violin_alpha = 0.8,
+                              x_order = NULL, overlap_order = NULL){
 
   assertthat::assert_that(assertthat::has_name(enrichments_df, "chr"))
   assertthat::assert_that(assertthat::has_name(enrichments_df, "start"))
@@ -115,14 +116,14 @@ plot_enrichments <- function(enrichments_df = NULL, log_transform = TRUE,
       names(col_pal) <- sample_metadata$group %>% as.character() %>% unique()
 
       plt <- ggplot(enrichments_final, aes(x = group, y = avg, fill = group)) +
-        geom_flat_violin(position = position_nudge(x = 0.25, y = 0), adjust = 2, trim = FALSE, alpha = violin_alpha)+
+        gghalves::geom_half_violin(side = "r", position = position_nudge(x = 0.25, y = 0), adjust = 2, trim = FALSE, alpha = violin_alpha)+
         geom_boxplot(width = .2, outlier.shape = NA, alpha = box_alpha)+
         scale_fill_manual(values = col_pal)
 
     } else {
 
       plt <- ggplot(enrichments_final, aes(x = group, y = avg, fill = group)) +
-        geom_flat_violin(position = position_nudge(x = 0.25, y = 0), adjust = 2, trim = FALSE, alpha = violin_alpha)+
+        gghalves::geom_half_violin(side = "r", position = position_nudge(x = 0.25, y = 0), adjust = 2, trim = FALSE, alpha = violin_alpha)+
         geom_boxplot(width = .2, outlier.shape = NA, alpha = box_alpha)
 
     }
@@ -175,14 +176,14 @@ plot_enrichments <- function(enrichments_df = NULL, log_transform = TRUE,
       names(col_pal) <- sample_metadata$sample_status %>% as.character() %>% unique()
 
       plt <- ggplot(enrichments_finalx, aes(x = group, y = avg, fill = sample_status)) +
-        geom_flat_violin(position = position_nudge(x = 0.25, y = 0), adjust = 2, trim = FALSE, alpha = violin_alpha)+
+        gghalves::geom_half_violin(side = "r", position = position_nudge(x = 0.25, y = 0), adjust = 2, trim = FALSE, alpha = violin_alpha)+
         geom_boxplot(width = .2, outlier.shape = NA, alpha = box_alpha)+
         scale_fill_manual(values = col_pal)
 
     } else {
 
       plt <- ggplot(enrichments_finalx, aes(x = group, y = avg, fill = sample_status)) +
-        geom_flat_violin(position = position_nudge(x = 0.25, y = 0), adjust = 2, trim = FALSE, alpha = violin_alpha)+
+        gghalves::geom_half_violin(side = "r", position = position_nudge(x = 0.25, y = 0), adjust = 2, trim = FALSE, alpha = violin_alpha)+
         geom_boxplot(width = .2, outlier.shape = NA, alpha = box_alpha)
 
     }

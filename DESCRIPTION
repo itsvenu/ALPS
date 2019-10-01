@@ -1,9 +1,14 @@
 Package: ALPS
 Title: AnaLysis routines for ePigenomicS data
-Version: 0.99.6
+Version: 0.99.7
 Author: Venu Thatikonda, Natalie Jäger
 Maintainer: Venu Thatikonda <thatikonda92@gmail.com>
-Description: ALPS is an R package that provides tools for the analysis and visualization, mainly aimed at epigenomics data.
+Description: The package provides analysis and publication quality visualization routines for genome-wide 
+  epigenomics data such as histone modification or transcription factor ChIP-seq, ATAC-seq, DNase-seq etc. 
+  The functions in the package can be used with any type of data that can be represented with bigwig files 
+  at any resolution. The goal of the ALPS is to provide analysis tools for most downstream analysis without 
+  leaving the R environment and most tools in the package require a minimal input that can be prepared with 
+  basic R, unix or excel skills.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -11,6 +16,7 @@ RoxygenNote: 6.1.1.9000
 Depends: R (>= 3.6)
 Imports: 
   assertthat,
+  BiocParallel,
   ChIPseeker,
   corrplot,
   data.table,
@@ -18,6 +24,7 @@ Imports:
   GenomicRanges,
   GGally,
   genefilter,
+  gghalves,
   ggplot2,
   ggseqlogo,
   Gviz,

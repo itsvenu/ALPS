@@ -19,6 +19,7 @@
 #' @importFrom rtracklayer BigWigFileList summary
 #' @importFrom tibble column_to_rownames rownames_to_column
 #' @importFrom tidyr separate
+#' @importFrom BiocParallel bplapply
 #'
 #' @return data.frame of enrichments within given genomic regions
 #'
@@ -78,7 +79,7 @@ multiBigwig_summary <- function(data_table = NULL,
 
     all_pid <- bwL %>% names
 
-    all_pid_reslst <- parallel::mclapply(all_pid, .par_fun)
+    all_pid_reslst <- BiocParallel::bplapply(all_pid, .par_fun)
     count_mat <- all_pid_reslst %>% as.data.frame() %>%
       tibble::rownames_to_column(var = "region") %>%
       tidyr::separate(region, into = c("chr", "start", "end"))

@@ -65,7 +65,10 @@ Following is the overview of the `ALPS` workflow and available functions
 Install the `ALPS` package with the following code
 
 ```{r eval=FALSE}
-devtools::install_github("itsvenu/ALPS")
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("ALPS")
 ```
 
 # Example usecases with ALPS
@@ -163,7 +166,7 @@ Either `replicate_level` or `group_level` plot appearance can be further modifie
 
 ## Plot enrichments across groups
 
-Once the group-specific genomic regions (or peaks) identified with various differential enrichments packages, e.g. DESeq2, diffBind, QSEA, one would be interested to visualize enrichment qunatities across all samples of all groups to show magnitude of differnce in enrichments. `plot_enrichments` function takes a data.frame of enrichments, either the output from `multiBigwig_summary` or a similar format and plots enrichments in a combination of box and violin plots. The function utilizes the slightly modified version of the code published at [@raincloud]. There are two ways one can plot enrichment differences, one way is to directly plot group level enrichments after averaging all samples within a group for each region and the other way is plotting paired conditions for each group, e.g. untreated, treated enrichments for a transcription factor. In both cases function needs a `sample_metadata` table along with the `enrichments` data.frame.
+Once the group-specific genomic regions (or peaks) identified with various differential enrichments packages, e.g. DESeq2, diffBind, QSEA, one would be interested to visualize enrichment qunatities across all samples of all groups to show magnitude of differnce in enrichments. `plot_enrichments` function takes a data.frame of enrichments, either the output from `multiBigwig_summary` or a similar format and plots enrichments in a combination of box and violin plots. The function is motivated by the paper [@raincloud] and a ggplot2 extension `gghalves` [@gghalves]. There are two ways one can plot enrichment differences, one way is to directly plot group level enrichments after averaging all samples within a group for each region and the other way is plotting paired conditions for each group, e.g. untreated, treated enrichments for a transcription factor. In both cases function needs a `sample_metadata` table along with the `enrichments` data.frame.
 
 Following example illustrates the uses of `plot_enrichments` function uses in different settings. If `plot_type = "separate"`, function plots group level enrichments
 
@@ -289,9 +292,9 @@ plot_motif_logo(motif_path = myc_transfac,
 
 `ALPS` package benefited suggestions from 
 
-* Gyan Prakash Mishra, Institute of Life Sciences
+* [Gyan Prakash Mishra](https://twitter.com/gprakash047), Institute of Life Sciences
 * [Kevin Blighe](https://www.biostars.org/u/41557), Visiting professor
-* Devon P Ryan, Max Plank Institute of Immunobiology and Epigenetics
+* [Devon P Ryan](https://twitter.com/dpryan79), Max Plank Institute of Immunobiology and Epigenetics
 * Michael Fletcher, DKFZ/German Cancer Research Center
 * [Sequence logo as barplot](https://stackoverflow.com/questions/1611215/remove-a-git-commit-which-has-not-been-pushed)
 

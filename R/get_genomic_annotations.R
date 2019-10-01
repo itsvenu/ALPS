@@ -150,7 +150,8 @@ get_genomic_annotations <- function(data_table = NULL,
                                                             TxDb = txdb, annoDb = "org.Hs.eg.db",
                                                             verbose = FALSE))
 
-    return_dat <- all_bed_ap@annoStat %>% as.data.frame() %>%
+    return_dat <- attr(x = all_bed_ap, which = "annoStat") %>%
+      as.data.frame() %>%
       tibble::remove_rownames()
 
   } else {
@@ -159,7 +160,7 @@ get_genomic_annotations <- function(data_table = NULL,
                          TxDb = txdb, tssRegion = tss_region,
                          verbose=FALSE)
 
-    return_dat <- lapply(all_bed_ap, function(x) x@annoStat %>%
+    return_dat <- lapply(all_bed_ap, function(d) attr(x = d, which = "annoStat") %>%
                            as.data.frame() %>%
                            tibble::remove_rownames()) %>%
       plyr::ldply() %>%
