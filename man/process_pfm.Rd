@@ -16,6 +16,6 @@ data.frame
 Process PFM format
 }
 \examples{
-myc_pfm <- system.file("extdata/motifs", "MA0147.2.pfm", package = "ALPS", mustWork = TRUE)
+myc_pfm <- system.file('extdata/motifs', 'MA0147.2.pfm', package = 'ALPS', mustWork = TRUE)
 myc_df <- process_pfm(x = myc_pfm)
 }

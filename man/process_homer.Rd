@@ -16,6 +16,6 @@ data.frame
 Process homer format
 }
 \examples{
-myc_homer <- system.file("extdata/motifs", "cmyc.homer", package = "ALPS", mustWork = TRUE)
+myc_homer <- system.file('extdata/motifs', 'cmyc.homer', package = 'ALPS', mustWork = TRUE)
 myc_df <- process_homer(x = myc_homer)
 }

@@ -19,14 +19,15 @@ merge overlaping genomic regions from multiple peak/bed files
 
 ## load example data
 
-chr21_data_table <- system.file("extdata/bw", "ALPS_example_datatable.txt", package = "ALPS", mustWork = TRUE)
+chr21_data_table <- system.file('extdata/bw', 'ALPS_example_datatable.txt',
+package = 'ALPS', mustWork = TRUE)
 
 ## attach path to bw_path and bed_path
 d_path <- dirname(chr21_data_table)
 
 chr21_data_table <- read.delim(chr21_data_table, header = TRUE)
-chr21_data_table$bw_path <- paste0(d_path, "/", chr21_data_table$bw_path)
-chr21_data_table$bed_path <- paste0(d_path, "/", chr21_data_table$bed_path)
+chr21_data_table$bw_path <- paste0(d_path, '/', chr21_data_table$bw_path)
+chr21_data_table$bed_path <- paste0(d_path, '/', chr21_data_table$bed_path)
 
 x <- as.character(chr21_data_table$bed_path)
 

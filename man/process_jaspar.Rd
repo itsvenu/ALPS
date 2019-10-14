@@ -16,6 +16,6 @@ data.frame
 Process jaspar format
 }
 \examples{
-myc_jaspar <- system.file("extdata/motifs", "MA0147.2.jaspar", package = "ALPS", mustWork = TRUE)
+myc_jaspar <- system.file('extdata/motifs', 'MA0147.2.jaspar', package = 'ALPS', mustWork = TRUE)
 myc_df <- process_jaspar(x = myc_jaspar)
 }

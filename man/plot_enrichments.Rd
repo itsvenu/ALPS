@@ -23,7 +23,7 @@ plot_enrichments(enrichments_df = NULL, log_transform = TRUE,
 
 \item{x_order}{ordering of levels on x-axis in resulting plot, default \code{NULL}}
 
-\item{overlap_order}{ordering of overlaying if \code{plot_type = "overlap"}. E.g. overlaying treatment data on top of untreated data, default \code{NULL}}
+\item{overlap_order}{ordering of overlaying if \code{plot_type = 'overlap'}. E.g. overlaying treatment data on top of untreated data, default \code{NULL}}
 }
 \value{
 \code{ggplot2} object
@@ -36,31 +36,31 @@ paired condition e.g untreated-treated
 \examples{
 
 ## load example data
-chr21_data_table <- system.file("extdata/bw", "ALPS_example_datatable.txt", package = "ALPS", mustWork = TRUE)
+chr21_data_table <- system.file('extdata/bw', 'ALPS_example_datatable.txt', package = 'ALPS', mustWork = TRUE)
 
 ## attach path to bw_path and bed_path
 d_path <- dirname(chr21_data_table)
 
 chr21_data_table <- read.delim(chr21_data_table, header = TRUE)
-chr21_data_table$bw_path <- paste0(d_path, "/", chr21_data_table$bw_path)
-chr21_data_table$bed_path <- paste0(d_path, "/", chr21_data_table$bed_path)
+chr21_data_table$bw_path <- paste0(d_path, '/', chr21_data_table$bw_path)
+chr21_data_table$bed_path <- paste0(d_path, '/', chr21_data_table$bed_path)
 
 enrichments <- multiBigwig_summary(data_table = chr21_data_table,
-                                   summary_type = "mean",
+                                   summary_type = 'mean',
                                    parallel = TRUE)
 
-## plot_type == "separate"
+## plot_type == 'separate'
 plot_enrichments(enrichments_df = enrichments, log_transform = TRUE,
-plot_type = "separate", sample_metadata = chr21_data_table)
+plot_type = 'separate', sample_metadata = chr21_data_table)
 
-## plot_type == "overlap"
-enrichemnts_4_overlapviolins <- system.file("extdata/overlap_violins", "enrichemnts_4_overlapviolins.txt", package = "ALPS", mustWork = TRUE)
+## plot_type == 'overlap'
+enrichemnts_4_overlapviolins <- system.file('extdata/overlap_violins', 'enrichemnts_4_overlapviolins.txt', package = 'ALPS', mustWork = TRUE)
 enrichemnts_4_overlapviolins <- read.delim(enrichemnts_4_overlapviolins, header = TRUE)
 
 ## metadata associated with above enrichments
-data_table_4_overlapviolins <- system.file("extdata/overlap_violins", "data_table_4_overlapviolins.txt", package = "ALPS", mustWork = TRUE)
+data_table_4_overlapviolins <- system.file('extdata/overlap_violins', 'data_table_4_overlapviolins.txt', package = 'ALPS', mustWork = TRUE)
 data_table_4_overlapviolins <- read.delim(data_table_4_overlapviolins, header = TRUE)
 
 plot_enrichments(enrichments_df = enrichemnts_4_overlapviolins, log_transform = FALSE,
-plot_type = "overlap", sample_metadata = data_table_4_overlapviolins)
+plot_type = 'overlap', sample_metadata = data_table_4_overlapviolins)
 }

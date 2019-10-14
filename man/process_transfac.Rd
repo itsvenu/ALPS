@@ -16,6 +16,6 @@ data.frame
 Process transfac format
 }
 \examples{
-myc_transfac <- system.file("extdata/motifs", "MA0147.2.transfac", package = "ALPS", mustWork = TRUE)
+myc_transfac <- system.file('extdata/motifs', 'MA0147.2.transfac', package = 'ALPS', mustWork = TRUE)
 my_df <- process_transfac(x = myc_transfac)
 }

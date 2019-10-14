@@ -4,8 +4,8 @@
 \alias{plot_browser_tracks}
 \title{UCSC Genome browser like plots}
 \usage{
-plot_browser_tracks(data_table = NULL, gene_range = NULL,
-  ref_gen = "hg38", cex.axis = 0.5, cex.title = 0.8, ...)
+plot_browser_tracks(data_table, gene_range = NULL, ref_gen = "hg38",
+  cex.axis = 0.5, cex.title = 0.8, ...)
 }
 \arguments{
 \item{data_table}{a dataframe that contains \code{bw_path}, \code{sample_id} and \code{color_code}. Tracks are colored according to \code{color_code}. Default \code{NULL}}
@@ -34,17 +34,17 @@ R/bioconductor package to plot browser like plots.
 
 ## load example data
 
-chr21_data_table <- system.file("extdata/bw", "ALPS_example_datatable.txt", package = "ALPS", mustWork = TRUE)
+chr21_data_table <- system.file('extdata/bw', 'ALPS_example_datatable.txt', package = 'ALPS', mustWork = TRUE)
 
 ## attach path to bw_path and bed_path
 d_path <- dirname(chr21_data_table)
 
 chr21_data_table <- read.delim(chr21_data_table, header = TRUE)
-chr21_data_table$bw_path <- paste0(d_path, "/", chr21_data_table$bw_path)
-chr21_data_table$bed_path <- paste0(d_path, "/", chr21_data_table$bed_path)
+chr21_data_table$bw_path <- paste0(d_path, '/', chr21_data_table$bw_path)
+chr21_data_table$bed_path <- paste0(d_path, '/', chr21_data_table$bed_path)
 
-gene_range = "chr21:45643725-45942454"
+gene_range = 'chr21:45643725-45942454'
 
 plot_browser_tracks(data_table = chr21_data_table,
-gene_range = gene_range, ref_gen = "hg38")
+gene_range = gene_range, ref_gen = 'hg38')
 }

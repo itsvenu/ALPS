@@ -4,8 +4,7 @@
 \alias{plot_genomic_annotations}
 \title{Plot genomic annotations}
 \usage{
-plot_genomic_annotations(annotations_df = NULL, plot_type = "bar",
-  col = NULL)
+plot_genomic_annotations(annotations_df, plot_type = "bar", col = NULL)
 }
 \arguments{
 \item{annotations_df}{a data.frame of genomic annotations.
@@ -31,17 +30,17 @@ directly or it is also compatible with a similar data.frame.
 
 ## load example data
 
-chr21_data_table <- system.file("extdata/bw", "ALPS_example_datatable.txt", package = "ALPS", mustWork = TRUE)
+chr21_data_table <- system.file('extdata/bw', 'ALPS_example_datatable.txt', package = 'ALPS', mustWork = TRUE)
 
 ## attach path to bw_path and bed_path
 d_path <- dirname(chr21_data_table)
 
 chr21_data_table <- read.delim(chr21_data_table, header = TRUE)
-chr21_data_table$bw_path <- paste0(d_path, "/", chr21_data_table$bw_path)
-chr21_data_table$bed_path <- paste0(d_path, "/", chr21_data_table$bed_path)
+chr21_data_table$bw_path <- paste0(d_path, '/', chr21_data_table$bw_path)
+chr21_data_table$bed_path <- paste0(d_path, '/', chr21_data_table$bed_path)
 
 g_annotations <- get_genomic_annotations(data_table = chr21_data_table,
-merge_level = "group_level")
+merge_level = 'group_level')
 
-plot_genomic_annotations(annotations_df = g_annotations, plot_type = "heatmap")
+plot_genomic_annotations(annotations_df = g_annotations, plot_type = 'heatmap')
 }

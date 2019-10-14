@@ -4,7 +4,7 @@
 \alias{get_variable_regions}
 \title{Get variable regions}
 \usage{
-get_variable_regions(enrichments_df = NULL, log_transform = TRUE,
+get_variable_regions(enrichments_df, log_transform = TRUE,
   scale = TRUE, num_regions = 500)
 }
 \arguments{
@@ -29,9 +29,9 @@ for further downstream explorative analysis e.g. unsupervised clustering
 
 mat <- matrix(sample.int(15, 9*100, TRUE), 9, 100) \%>\% as.data.frame()
 mat <- mat \%>\%
-tibble::rowid_to_column(var = "start") \%>\%
+tibble::rowid_to_column(var = 'start') \%>\%
 dplyr::mutate(end = start + 1000) \%>\%
-dplyr::mutate(chr = "chr1") \%>\%
+dplyr::mutate(chr = 'chr1') \%>\%
 dplyr::select(chr, start, end, dplyr::everything())
 
 get_variable_regions(enrichments_df = mat, num_regions = 50)

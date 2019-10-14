@@ -16,6 +16,6 @@ data.frame
 Process meme format
 }
 \examples{
-myc_meme <- system.file("extdata/motifs", "MA0147.2.meme", package = "ALPS", mustWork = TRUE)
+myc_meme <- system.file('extdata/motifs', 'MA0147.2.meme', package = 'ALPS', mustWork = TRUE)
 myc_df <- process_meme(x = myc_meme)
 }

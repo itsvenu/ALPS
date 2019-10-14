@@ -4,38 +4,43 @@
 \alias{get_genomic_annotations}
 \title{Annotate genomic regions}
 \usage{
-get_genomic_annotations(data_table = NULL, ref_gen = "hg38",
+get_genomic_annotations(data_table, ref_gen = "hg38",
   tss_region = c(-1000, 1000), merge_level = "all")
 }
 \arguments{
-\item{data_table}{a data.frame of sample table, as is for \code{multiBigwig_summary} input table, default NULL}
+\item{data_table}{a data.frame of sample table, as is for
+\code{multiBigwig_summary} input table, default NULL}
 
-\item{ref_gen}{reference genome, either \code{hg38 or hg19}, default \code{hg38}}
+\item{ref_gen}{reference genome, either \code{hg38 or hg19},
+default \code{hg38}}
 
 \item{tss_region}{bp ± TSS to define promoter regions}
 
 \item{merge_level}{either \code{all, group_level} or \code{none}.
-\code{all} prepares a consensus set of peaks from all files present in \code{data_table}.
-\code{group_level} prepares consensus set of peaks from all samples present each group separately.
-\code{none} does not prepare any consensus peak set, annotates each peak file separately. Default \code{all}}
+\code{all} prepares a consensus set of peaks from all
+files present in \code{data_table}. \code{group_level} prepares
+consensus set of peaks from all samples present each group separately.
+\code{none} does not prepare any consensus peak set, annotates each peak
+file separately. Default \code{all}}
 }
 \value{
 a data.frame of annotations and percentages
 }
 \description{
-annotate genomic regions by simultaneosuly merging overlaping regions and
-preparing consensus set of genomic regions from multiple files
+annotate genomic regions by simultaneosuly merging
+overlaping regions and preparing consensus set of
+genomic regions from multiple files
 }
 \examples{
-chr21_data_table <- system.file("extdata/bw", "ALPS_example_datatable.txt", package = "ALPS", mustWork = TRUE)
+chr21_data_table <- system.file('extdata/bw', 'ALPS_example_datatable.txt', package = 'ALPS', mustWork = TRUE)
 
 ## attach path to bw_path and bed_path
 d_path <- dirname(chr21_data_table)
 
 chr21_data_table <- read.delim(chr21_data_table, header = TRUE)
-chr21_data_table$bw_path <- paste0(d_path, "/", chr21_data_table$bw_path)
-chr21_data_table$bed_path <- paste0(d_path, "/", chr21_data_table$bed_path)
+chr21_data_table$bw_path <- paste0(d_path, '/', chr21_data_table$bw_path)
+chr21_data_table$bed_path <- paste0(d_path, '/', chr21_data_table$bed_path)
 
 get_genomic_annotations(data_table = chr21_data_table,
-merge_level = "group_level")
+merge_level = 'group_level')
 }

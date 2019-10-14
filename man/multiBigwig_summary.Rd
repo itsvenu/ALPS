@@ -4,8 +4,7 @@
 \alias{multiBigwig_summary}
 \title{Enrichments at genomics regions}
 \usage{
-multiBigwig_summary(data_table = NULL, summary_type = "mean",
-  parallel = TRUE)
+multiBigwig_summary(data_table, summary_type = "mean", parallel = TRUE)
 }
 \arguments{
 \item{data_table}{a dataframe that contains \code{bw_path}, \code{sample_id}.
@@ -32,16 +31,16 @@ This function is similar to
 
 ## load example data
 
-chr21_data_table <- system.file("extdata/bw", "ALPS_example_datatable.txt", package = "ALPS", mustWork = TRUE)
+chr21_data_table <- system.file('extdata/bw', 'ALPS_example_datatable.txt', package = 'ALPS', mustWork = TRUE)
 
 ## attach path to bw_path and bed_path
 d_path <- dirname(chr21_data_table)
 
 chr21_data_table <- read.delim(chr21_data_table, header = TRUE)
-chr21_data_table$bw_path <- paste0(d_path, "/", chr21_data_table$bw_path)
-chr21_data_table$bed_path <- paste0(d_path, "/", chr21_data_table$bed_path)
+chr21_data_table$bw_path <- paste0(d_path, '/', chr21_data_table$bw_path)
+chr21_data_table$bed_path <- paste0(d_path, '/', chr21_data_table$bed_path)
 
 enrichments <- multiBigwig_summary(data_table = chr21_data_table,
-                                   summary_type = "mean",
+                                   summary_type = 'mean',
                                    parallel = FALSE)
 }

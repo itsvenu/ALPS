@@ -4,8 +4,7 @@
 \alias{plot_motif_logo}
 \title{Plot sequence motifs}
 \usage{
-plot_motif_logo(motif_path = NULL, database = NULL,
-  plot_type = "bar")
+plot_motif_logo(motif_path, database = NULL, plot_type = "bar")
 }
 \arguments{
 \item{motif_path}{path to motif file, default \code{NULL}}
@@ -24,12 +23,12 @@ It supports motif formats from different databases e.g. \code{JASPAR}, \code{MEM
 \examples{
 
 ## examplr motif file paths
-myc_meme <- system.file("extdata/motifs", "MA0147.2.meme", package = "ALPS", mustWork = TRUE)
-myc_jaspar <- system.file("extdata/motifs", "MA0147.2.jaspar", package = "ALPS", mustWork = TRUE)
-myc_transfac <- system.file("extdata/motifs", "MA0147.2.transfac", package = "ALPS", mustWork = TRUE)
-myc_homer <- system.file("extdata/motifs", "cmyc.homer", package = "ALPS", mustWork = TRUE)
-myc_pfm <- system.file("extdata/motifs", "MA0147.2.pfm", package = "ALPS", mustWork = TRUE)
+myc_meme <- system.file('extdata/motifs', 'MA0147.2.meme', package = 'ALPS', mustWork = TRUE)
+myc_jaspar <- system.file('extdata/motifs', 'MA0147.2.jaspar', package = 'ALPS', mustWork = TRUE)
+myc_transfac <- system.file('extdata/motifs', 'MA0147.2.transfac', package = 'ALPS', mustWork = TRUE)
+myc_homer <- system.file('extdata/motifs', 'cmyc.homer', package = 'ALPS', mustWork = TRUE)
+myc_pfm <- system.file('extdata/motifs', 'MA0147.2.pfm', package = 'ALPS', mustWork = TRUE)
 
 ## plot motifs
-plot_motif_logo(motif_path = myc_homer, database = "homer", plot_type = "logo")
+plot_motif_logo(motif_path = myc_homer, database = 'homer', plot_type = 'logo')
 }
