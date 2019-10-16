@@ -52,7 +52,7 @@ get_variable_regions <- function(enrichments_df,
 
     ## select var regions
     rv <- genefilter::rowVars(enrichments_lg)
-    idx <- order(-rv)[1:num_regions]
+    idx <- order(-rv)[seq_len(num_regions)]
     enrichments_var <- enrichments_lg[idx,]
 
     ## scaling

@@ -43,7 +43,7 @@ process_jaspar <- function(x) {
 
     x_df <- matrix(nrow = length(x_rd2[[1]]) -1, ncol = 4)
 
-    for (i in 1:length(x_rd2)) {
+    for (i in seq_along(x_rd2)) {
 
         x_df[, i] <- x_rd2[[i]] %>% .[-1] %>%
             as.numeric()

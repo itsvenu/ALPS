@@ -93,7 +93,7 @@ plot_browser_tracks <- function(data_table,
     all_sample_ids <- data_table$sample_id %>%
       as.character()
 
-    for (i in 1:length(all_sample_ids)) {
+    for (i in seq_along(all_sample_ids)) {
 
         x_id <- all_sample_ids[i]
         x_dat <- data_table %>% dplyr::filter(sample_id == get("x_id"))
