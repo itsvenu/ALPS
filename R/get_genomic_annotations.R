@@ -59,7 +59,7 @@ merge_GR <- function(x) {
 #'
 #' @param data_table a data.frame of sample table, as is for
 #' \code{multiBigwig_summary} input table, default NULL
-#' @param ref_gen reference genome, either \code{hg38 or hg19},
+#' @param ref_gen reference genome, either \code{hg38, mm10 or hg19},
 #' default \code{hg38}
 #' @param tss_region bp ± TSS to define promoter regions
 #' @param merge_level either \code{all, group_level} or \code{none}.
@@ -71,6 +71,7 @@ merge_GR <- function(x) {
 #'
 #' @importFrom TxDb.Hsapiens.UCSC.hg38.knownGene TxDb.Hsapiens.UCSC.hg38.knownGene
 #' @importFrom TxDb.Hsapiens.UCSC.hg19.knownGene TxDb.Hsapiens.UCSC.hg19.knownGene
+#' @importFrom TxDb.Mmusculus.UCSC.mm10.knownGene TxDb.Mmusculus.UCSC.mm10.knownGene
 #' @importFrom dplyr filter pull
 #' @importFrom ChIPseeker annotatePeak
 #' @importFrom data.table dcast
@@ -100,10 +101,10 @@ get_genomic_annotations <- function(data_table,
 
     ## check ref_gen
     if (ref_gen == "hg38") {
-
         txdb <- TxDb.Hsapiens.UCSC.hg38.knownGene::TxDb.Hsapiens.UCSC.hg38.knownGene
+    } else if (ref_gen == "mm10") {
+        txdb <- TxDb.Mmusculus.UCSC.mm10.knownGene::TxDb.Mmusculus.UCSC.mm10.knownGene
     } else {
-
         txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene
     }
 

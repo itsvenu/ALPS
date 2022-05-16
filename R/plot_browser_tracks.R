@@ -21,13 +21,14 @@ getChrStartEnd <- function(x) {
 #'
 #' @param data_table a dataframe that contains \code{bw_path}, \code{sample_id} and \code{color_code}. Tracks are colored according to \code{color_code}. Default \code{NULL}
 #' @param gene_range genomic region for which browser-like plots needed in format \code{chr:start-end}. Default \code{NULL}
-#' @param ref_gen reference genome, to get gene annotations, currently supports  \code{hg19} and \code{hg38}. Default, \code{hg38}
+#' @param ref_gen reference genome, to get gene annotations, currently supports  \code{hg19} \code{mm10} and \code{hg38}. Default, \code{hg38}
 #' @param cex.axis axis label size, default \code{0.5}
 #' @param cex.title axis title size, default \code{0.8}
 #' @param ... additional arguments to change the appearence of a plot. All arguments that can be passed to base R graphics are supported
 #'
 #' @importFrom TxDb.Hsapiens.UCSC.hg38.knownGene TxDb.Hsapiens.UCSC.hg38.knownGene
 #' @importFrom TxDb.Hsapiens.UCSC.hg19.knownGene TxDb.Hsapiens.UCSC.hg19.knownGene
+#' @importFrom TxDb.Mmusculus.UCSC.mm10.knownGene TxDb.Mmusculus.UCSC.mm10.knownGene
 #' @importFrom dplyr filter pull
 #' @importFrom Gviz GeneRegionTrack DataTrack plotTracks
 #'
@@ -70,11 +71,10 @@ plot_browser_tracks <- function(data_table,
 
     ## build genetrack
     if (ref_gen == "hg38") {
-
         txdb <- TxDb.Hsapiens.UCSC.hg38.knownGene::TxDb.Hsapiens.UCSC.hg38.knownGene
-
+    } else if (ref_gen == "mm10") {
+        txdb <- TxDb.Mmusculus.UCSC.mm10.knownGene::TxDb.Mmusculus.UCSC.mm10.knownGene
     } else {
-
         txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene
     }
 
