@@ -29,7 +29,7 @@ getChrStartEnd <- function(x) {
 #' @importFrom TxDb.Hsapiens.UCSC.hg38.knownGene TxDb.Hsapiens.UCSC.hg38.knownGene
 #' @importFrom TxDb.Hsapiens.UCSC.hg19.knownGene TxDb.Hsapiens.UCSC.hg19.knownGene
 #' @importFrom TxDb.Mmusculus.UCSC.mm10.knownGene TxDb.Mmusculus.UCSC.mm10.knownGene
-#' @importFrom dplyr filter pull
+#' @importFrom dplyr filter pull AnnotationDbi
 #' @importFrom Gviz GeneRegionTrack DataTrack plotTracks
 #'
 #' @return plot of genome browser tracks
@@ -59,66 +59,74 @@ plot_browser_tracks <- function(data_table,
                                 ref_gen = "hg38",
                                 cex.axis = 0.5,
                                 cex.title = 0.8, ...) {
-
-    assertthat::assert_that(is.data.frame(data_table), msg = "Please provide `data_table`")
-    assertthat::assert_that(assertthat::has_name(data_table, "bw_path"))
-    assertthat::assert_that(assertthat::has_name(data_table, "sample_id"))
-    assertthat::assert_that(assertthat::has_name(data_table, "color_code"))
-
-    assertthat::assert_that(!is.null(gene_range), msg = "Please provide `gene_range` in format; chr:start-end")
-
-    gene_range_split <- getChrStartEnd(x = gene_range)
-
-    ## build genetrack
-    if (ref_gen == "hg38") {
-        txdb <- TxDb.Hsapiens.UCSC.hg38.knownGene::TxDb.Hsapiens.UCSC.hg38.knownGene
-    } else if (ref_gen == "mm10") {
-        txdb <- TxDb.Mmusculus.UCSC.mm10.knownGene::TxDb.Mmusculus.UCSC.mm10.knownGene
-    } else {
-        txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene
-    }
-
-    ##
-    grtrack <- Gviz::GeneRegionTrack(txdb,
-                                     genome = ref_gen,
-                                     chromosome = gene_range_split$chr,
-                                     window = -1, name = NULL, background.title = "white",
-                                     col.frame = "white", col.axis = "black",
-                                     col = "black", col.title = "black",
-                                     geneSymbol = TRUE, showId = TRUE,
-                                     from = gene_range_split$from, to = gene_range_split$to)
-
-    ## build enrichment tracks
-    dt_list <- list()
-    all_sample_ids <- data_table$sample_id %>%
-      as.character()
-
-    for (i in seq_along(all_sample_ids)) {
-
-        x_id <- all_sample_ids[i]
-        x_dat <- data_table %>% dplyr::filter(sample_id == get("x_id"))
-
-        x_bw <- x_dat %>% dplyr::pull(bw_path) %>% as.character()
-        x_col <- x_dat %>% dplyr::pull(color_code) %>% as.character()
-
-        x_dt <- Gviz::DataTrack(range = x_bw,
-                                genome = ref_gen,
-                                chromosome = gene_range_split$chr,
-                                name = x_id, type = "hist", window = -1,
-                                fill.histogram = x_col, col.histogram = "NA",
-                                background.title = "white", col.frame = "white",
-                                col.axis = "black", col = "black",
-                                col.title = "black")
-
-        dt_list[[i]] <- x_dt
-
-    }
-
-    gtrack_pos <- length(dt_list) + 1
-    dt_list[[gtrack_pos]] <- grtrack
-
-    Gviz::plotTracks(dt_list, from = gene_range_split$from,
-                     to = gene_range_split$to, cex.axis = cex.axis,
-                     cex.title = cex.title, ...)
-
+  
+  assertthat::assert_that(is.data.frame(data_table), msg = "Please provide `data_table`")
+  assertthat::assert_that(assertthat::has_name(data_table, "bw_path"))
+  assertthat::assert_that(assertthat::has_name(data_table, "sample_id"))
+  assertthat::assert_that(assertthat::has_name(data_table, "color_code"))
+  
+  assertthat::assert_that(!is.null(gene_range), msg = "Please provide `gene_range` in format; chr:start-end")
+  
+  gene_range_split <- getChrStartEnd(x = gene_range)
+  
+  ## build genetrack
+  if (ref_gen == "hg38") {
+    txdb <- TxDb.Hsapiens.UCSC.hg38.knownGene::TxDb.Hsapiens.UCSC.hg38.knownGene
+    symbol_db <- org.Hs.eg.db
+  } else if (ref_gen == "mm10") {
+    txdb <- TxDb.Mmusculus.UCSC.mm10.knownGene::TxDb.Mmusculus.UCSC.mm10.knownGene
+    symbol_db <- org.Mm.eg.db
+  } else {
+    txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene
+  }
+  
+  ##
+  grtrack <- Gviz::GeneRegionTrack(txdb,
+                                   genome = ref_gen,
+                                   chromosome = gene_range_split$chr,
+                                   window = -1, name = NULL, background.title = "white",
+                                   col.frame = "white", col.axis = "black",
+                                   col = "black", col.title = "black",
+                                   geneSymbol = TRUE, showId = TRUE,
+                                   from = gene_range_split$from, to = gene_range_split$to, transcriptAnnotation = "symbol")
+  
+  # map gene symbol
+  gene_ids = ranges(grtrack)
+  gene_symbols <- mapIds(symbol_db, keys=gene_ids$gene, column = "SYMBOL", keytype = "ENTREZID", multiVals = "first")
+  gene_symbols[is.na(names(gene_symbols))] <- gene_ids$transcript[is.na(names(gene_symbols))]
+  gene_ids$symbol <- gene_symbols
+  ranges(grtrack) <- gene_ids
+  
+  ## build enrichment tracks
+  dt_list <- list()
+  all_sample_ids <- data_table$sample_id %>%
+    as.character()
+  
+  for (i in seq_along(all_sample_ids)) {
+    
+    x_id <- all_sample_ids[i]
+    x_dat <- data_table %>% dplyr::filter(sample_id == get("x_id"))
+    
+    x_bw <- x_dat %>% dplyr::pull(bw_path) %>% as.character()
+    x_col <- x_dat %>% dplyr::pull(color_code) %>% as.character()
+    
+    x_dt <- Gviz::DataTrack(range = x_bw,
+                            genome = ref_gen,
+                            chromosome = gene_range_split$chr,
+                            name = x_id, type = "hist", window = -1,
+                            fill.histogram = x_col, col.histogram = "NA",
+                            background.title = "white", col.frame = "white",
+                            col.axis = "black", col = "black",
+                            col.title = "black")
+    
+    dt_list[[i]] <- x_dt
+    
+  }
+  
+  gtrack_pos <- length(dt_list) + 1
+  dt_list[[gtrack_pos]] <- grtrack
+  
+  Gviz::plotTracks(dt_list, from = gene_range_split$from,
+                   to = gene_range_split$to, cex.axis = cex.axis,
+                   cex.title = cex.title,  ...)
 }

@@ -1,6 +1,6 @@
 Package: ALPS
 Title: AnaLysis routines for ePigenomicS data
-Version: 0.100.0
+Version: 0.100.1
 Author: Venu Thatikonda, Natalie Jäger
 Maintainer: Venu Thatikonda <thatikonda92@gmail.com>
 Description: The package provides analysis and publication quality visualization routines for genome-wide 
