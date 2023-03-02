@@ -12,7 +12,7 @@ Description: The package provides analysis and publication quality visualization
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: false
-RoxygenNote: 6.1.1
+RoxygenNote: 7.2.3
 Depends: R (>= 3.6)
 Imports: 
   assertthat,

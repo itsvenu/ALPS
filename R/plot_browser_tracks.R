@@ -1,15 +1,15 @@
 getChrStartEnd <- function(x) {
-
-    x_chr <- gsub(":.*", "", x) %>% as.character()
-    x_start <- gsub(".*:", "", x) %>% gsub("-.*",
-        "", .) %>% as.numeric()
-    x_end <- gsub(".*:", "", x) %>% gsub(".*-",
-        "", .) %>% as.numeric()
-
-    x_res <- list(chr = x_chr, from = x_start,
-        to = x_end)
-
-    return(x_res)
+  
+  x_chr <- gsub(":.*", "", x) %>% as.character()
+  x_start <- gsub(".*:", "", x) %>% gsub("-.*",
+                                         "", .) %>% as.numeric()
+  x_end <- gsub(".*:", "", x) %>% gsub(".*-",
+                                       "", .) %>% as.numeric()
+  
+  x_res <- list(chr = x_chr, from = x_start,
+                to = x_end)
+  
+  return(x_res)
 }
 
 #' UCSC Genome browser like plots
@@ -29,8 +29,12 @@ getChrStartEnd <- function(x) {
 #' @importFrom TxDb.Hsapiens.UCSC.hg38.knownGene TxDb.Hsapiens.UCSC.hg38.knownGene
 #' @importFrom TxDb.Hsapiens.UCSC.hg19.knownGene TxDb.Hsapiens.UCSC.hg19.knownGene
 #' @importFrom TxDb.Mmusculus.UCSC.mm10.knownGene TxDb.Mmusculus.UCSC.mm10.knownGene
-#' @importFrom dplyr filter pull AnnotationDbi
+#' @importFrom dplyr filter pull
 #' @importFrom Gviz GeneRegionTrack DataTrack plotTracks
+#' @importFrom org.Mm.eg.db org.Mm.eg.db
+#' @importFrom org.Hs.eg.db org.Hs.eg.db
+#' @importFrom IRanges ranges
+#' @importFrom AnnotationDbi mapIds
 #'
 #' @return plot of genome browser tracks
 #'
@@ -72,12 +76,13 @@ plot_browser_tracks <- function(data_table,
   ## build genetrack
   if (ref_gen == "hg38") {
     txdb <- TxDb.Hsapiens.UCSC.hg38.knownGene::TxDb.Hsapiens.UCSC.hg38.knownGene
-    symbol_db <- org.Hs.eg.db
+    symbol_db <- org.Hs.eg.db::org.Hs.eg.db
   } else if (ref_gen == "mm10") {
     txdb <- TxDb.Mmusculus.UCSC.mm10.knownGene::TxDb.Mmusculus.UCSC.mm10.knownGene
-    symbol_db <- org.Mm.eg.db
+    symbol_db <- org.Mm.eg.db::org.Mm.eg.db
   } else {
     txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene
+    symbol_db <- org.Hs.eg.db::org.Hs.eg.db
   }
   
   ##
@@ -88,19 +93,24 @@ plot_browser_tracks <- function(data_table,
                                    col.frame = "white", col.axis = "black",
                                    col = "black", col.title = "black",
                                    geneSymbol = TRUE, showId = TRUE,
-                                   from = gene_range_split$from, to = gene_range_split$to, transcriptAnnotation = "symbol")
+                                   from = gene_range_split$from, to = gene_range_split$to,
+                                   collapseTranscripts="longest", shape="arrow", transcriptAnnotation = "symbol")
   
   # map gene symbol
-  gene_ids = ranges(grtrack)
-  gene_symbols <- mapIds(symbol_db, keys=gene_ids$gene, column = "SYMBOL", keytype = "ENTREZID", multiVals = "first")
+  gene_ids = IRanges::ranges(grtrack)
+  gene_symbols <- AnnotationDbi::mapIds(symbol_db, keys=gene_ids$gene, column = "SYMBOL", keytype = "ENTREZID", multiVals = "first")
   gene_symbols[is.na(names(gene_symbols))] <- gene_ids$transcript[is.na(names(gene_symbols))]
   gene_ids$symbol <- gene_symbols
-  ranges(grtrack) <- gene_ids
+  IRanges::ranges(grtrack) <- gene_ids
   
   ## build enrichment tracks
   dt_list <- list()
   all_sample_ids <- data_table$sample_id %>%
     as.character()
+  
+  axisTrack <- Gviz::GenomeAxisTrack()
+  atrack <- length(dt_list)+1
+  dt_list[[atrack]] <- axisTrack
   
   for (i in seq_along(all_sample_ids)) {
     
@@ -113,13 +123,13 @@ plot_browser_tracks <- function(data_table,
     x_dt <- Gviz::DataTrack(range = x_bw,
                             genome = ref_gen,
                             chromosome = gene_range_split$chr,
-                            name = x_id, type = "hist", window = -1,
+                            name = gsub("_", " ", x_id), type = "hist", window = -1,
                             fill.histogram = x_col, col.histogram = "NA",
                             background.title = "white", col.frame = "white",
                             col.axis = "black", col = "black",
                             col.title = "black")
     
-    dt_list[[i]] <- x_dt
+    dt_list[[i+1]] <- x_dt
     
   }
   
@@ -128,5 +138,5 @@ plot_browser_tracks <- function(data_table,
   
   Gviz::plotTracks(dt_list, from = gene_range_split$from,
                    to = gene_range_split$to, cex.axis = cex.axis,
-                   cex.title = cex.title,  ...)
+                   cex.title = cex.title, ...)
 }

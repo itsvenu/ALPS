@@ -4,8 +4,12 @@
 \alias{get_variable_regions}
 \title{Get variable regions}
 \usage{
-get_variable_regions(enrichments_df, log_transform = TRUE,
-  scale = TRUE, num_regions = 500)
+get_variable_regions(
+  enrichments_df,
+  log_transform = TRUE,
+  scale = TRUE,
+  num_regions = 500
+)
 }
 \arguments{
 \item{enrichments_df}{a data.frame o enrichments at genomic regions. Output of

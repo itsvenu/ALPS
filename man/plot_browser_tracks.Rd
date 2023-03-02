@@ -4,15 +4,21 @@
 \alias{plot_browser_tracks}
 \title{UCSC Genome browser like plots}
 \usage{
-plot_browser_tracks(data_table, gene_range = NULL, ref_gen = "hg38",
-  cex.axis = 0.5, cex.title = 0.8, ...)
+plot_browser_tracks(
+  data_table,
+  gene_range = NULL,
+  ref_gen = "hg38",
+  cex.axis = 0.5,
+  cex.title = 0.8,
+  ...
+)
 }
 \arguments{
 \item{data_table}{a dataframe that contains \code{bw_path}, \code{sample_id} and \code{color_code}. Tracks are colored according to \code{color_code}. Default \code{NULL}}
 
 \item{gene_range}{genomic region for which browser-like plots needed in format \code{chr:start-end}. Default \code{NULL}}
 
-\item{ref_gen}{reference genome, to get gene annotations, currently supports  \code{hg19} and \code{hg38}. Default, \code{hg38}}
+\item{ref_gen}{reference genome, to get gene annotations, currently supports  \code{hg19} \code{mm10} and \code{hg38}. Default, \code{hg38}}
 
 \item{cex.axis}{axis label size, default \code{0.5}}
 
