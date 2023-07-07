@@ -4,9 +4,16 @@
 \alias{plot_enrichments}
 \title{Enrichment plots}
 \usage{
-plot_enrichments(enrichments_df = NULL, log_transform = TRUE,
-  plot_type = "separate", sample_metadata, box_alpha = 0.8,
-  violin_alpha = 0.8, x_order = NULL, overlap_order = NULL)
+plot_enrichments(
+  enrichments_df = NULL,
+  log_transform = TRUE,
+  plot_type = "separate",
+  sample_metadata,
+  box_alpha = 0.8,
+  violin_alpha = 0.8,
+  x_order = NULL,
+  overlap_order = NULL
+)
 }
 \arguments{
 \item{enrichments_df}{enrichments at genomics regions from all samples, as in the format of output from \code{\link{multiBigwig_summary}}}

@@ -1,6 +1,6 @@
 Package: ALPS
 Title: AnaLysis routines for ePigenomicS data
-Version: 0.99.9
+Version: 0.100.1
 Author: Venu Thatikonda, Natalie Jäger
 Maintainer: Venu Thatikonda <thatikonda92@gmail.com>
 Description: The package provides analysis and publication quality visualization routines for genome-wide 
@@ -12,7 +12,7 @@ Description: The package provides analysis and publication quality visualization
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: false
-RoxygenNote: 6.1.1
+RoxygenNote: 7.2.3
 Depends: R (>= 3.6)
 Imports: 
   assertthat,
@@ -39,6 +39,7 @@ Imports:
   tidyr,
   TxDb.Hsapiens.UCSC.hg19.knownGene,
   TxDb.Hsapiens.UCSC.hg38.knownGene,
+  TxDb.Mmusculus.UCSC.mm10.knownGene,
   utils
 URL: https://github.com/itsvenu/ALPS
 BugReports: https://github.com/itsvenu/ALPS/issues

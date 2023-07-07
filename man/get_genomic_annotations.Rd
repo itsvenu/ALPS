@@ -4,14 +4,18 @@
 \alias{get_genomic_annotations}
 \title{Annotate genomic regions}
 \usage{
-get_genomic_annotations(data_table, ref_gen = "hg38",
-  tss_region = c(-1000, 1000), merge_level = "all")
+get_genomic_annotations(
+  data_table,
+  ref_gen = "hg38",
+  tss_region = c(-1000, 1000),
+  merge_level = "all"
+)
 }
 \arguments{
 \item{data_table}{a data.frame of sample table, as is for
 \code{multiBigwig_summary} input table, default NULL}
 
-\item{ref_gen}{reference genome, either \code{hg38 or hg19},
+\item{ref_gen}{reference genome, either \code{hg38, mm10 or hg19},
 default \code{hg38}}
 
 \item{tss_region}{bp ± TSS to define promoter regions}

@@ -4,9 +4,17 @@
 \alias{plot_correlation}
 \title{Correlations among replicates/groups}
 \usage{
-plot_correlation(enrichments_df, log_transform = TRUE,
-  method = "pearson", plot_type = "replicate_level", sample_metadata,
-  ...)
+plot_correlation(
+  enrichments_df,
+  log_transform = TRUE,
+  method = "pearson",
+  plot_type = "replicate_level",
+  select_var = FALSE,
+  colvar,
+  rowvar,
+  sample_metadata,
+  ...
+)
 }
 \arguments{
 \item{enrichments_df}{dataframe of enrichments, usually in the form of the output from function \code{\link{multiBigwig_summary}}, default \code{NULL}}
@@ -16,6 +24,12 @@ plot_correlation(enrichments_df, log_transform = TRUE,
 \item{method}{method to calculate correlation coefficient, one of \code{'pearson'} (default), \code{'spearman'} or \code{'kendall'}}
 
 \item{plot_type}{whether to plot \code{replicate_level} correlations or \code{group_level} correlations. \code{replicate_level} plot represents the pairwise correlation values among all the samples/columns, where as the \code{group_level} plot is a paired plot of genomic regions after averaging of all samples in a group. Default \code{replicate_level}}
+
+\item{select_var}{logical, whether to plot only a subset of columns from \code{enrichments_df}, if TRUE then colvar and rowvar must also be specified. Can also be used to change order of plotted variables.}
+
+\item{colvar}{When \code{select_var} = TRUE, define the columns from \code{enrichments_df} that should be used as column variables in the correlation plot. Enter a single number, a range (e.g. 1:3), or selected columns (e.g. c(3,1,5))}
+
+\item{rowvar}{When \code{select_var} = TRUE, define the columns from \code{enrichments_df} that should be used as row variables in the correlation plot. Enter a single number, a range (e.g. 1:3), or selected columns (e.g. c(3,1,5))}
 
 \item{sample_metadata}{a data.frame required if \code{plot_type = 'group_level'}. The data.frame must contain columns \code{sample_id} and \code{group}}
 
